@@ -8,8 +8,8 @@ MLB Head 2 Head is a web application with the intent to settle arguments between
 
 ## Wireframes
 
-![alt text](./wireframes/mlb-h2h-mobile.png)
-![alt text](./wireframes/mlb-h2h.png)
+![alt text](./wireframes/MLB-H2H-mobile.png)
+![alt text](./wireframes/MLB-H2H.png)
 
 #### Component Hierarchy
 
