@@ -8,6 +8,9 @@ MLB Head 2 Head is a web application with the intent to settle arguments between
 
 ## Wireframes
 
+![alt text](./wireframes/mlb-h2h-mobile.png)
+![alt text](./wireframes/mlb-h2h.png)
+
 #### Component Hierarchy
 
 ```
@@ -68,8 +71,7 @@ The homepage will have a single text input field where the user can enter a play
 
 #### Post-MVP
 
+- Debounce the search input so that PlayerList is rendered as user enters name.
 - Page transitions and component animations using [Framer Motion](https://www.framer.com/motion/).
+- Leaderboard bar displayed at the top of the homepage - shows current leaders in popular stats
 - The ability to compare more players more players based on screen size.
-- Debounce the search input so that player list is rendered as user enters name.
-
-<br>
