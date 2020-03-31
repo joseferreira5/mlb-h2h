@@ -1,18 +1,26 @@
 import React, { useState, useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import axios from 'axios';
 
-import SearchLayout from './styles/SearchLayout';
 import InputGroup from './styles/InputGroup';
 import TextInput from './styles/TextInput';
 import Checkbox from './styles/Checkbox';
 import Button from './styles/Button';
+import PlayerResult from './PlayerResult';
+import PlayerList from './PlayerList';
 
-export default function PlayerSearch(props) {
+const SearchLayout = styled.section`
+  display: grid;
+  grid-template-columns: 1fr 20% 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  height: 100%;
+`;
+
+export default function PlayerSearch() {
   const [userInput, setUserInput] = useState('');
   const [active, setActive] = useState('Y');
-  const [playerId, setPlayerId] = useState(null);
   const [playerInfo, setPlayerInfo] = useState(null);
+  const [playerList, setPlayerList] = useState(null);
   const themeContext = useContext(ThemeContext);
   const baseUrl =
     'http://lookup-service-prod.mlb.com/json/named.search_player_all.bam';
@@ -20,16 +28,23 @@ export default function PlayerSearch(props) {
 
   const handleSearch = async () => {
     const res = await axios.get(`${baseUrl}${queryStr}`);
-    setPlayerId(res.data.search_player_all.queryResults.row.player_id);
-    setPlayerInfo(res.data.search_player_all.queryResults.row);
+
+    if (res.data.search_player_all.queryResults.totalSize > 1) {
+      setPlayerInfo(null);
+      setPlayerList(res.data.search_player_all.queryResults.row);
+    } else {
+      setPlayerList(null);
+      setPlayerInfo(res.data.search_player_all.queryResults.row);
+    }
   };
 
   const handleCheck = e => {
-    if (e.target.checked) {
-      setActive('Y');
-    } else {
-      setActive('N');
-    }
+    e.target.checked ? setActive('Y') : setActive('N');
+  };
+
+  const handleSelect = player => {
+    setPlayerInfo(player);
+    setPlayerList(null);
   };
 
   return (
@@ -47,8 +62,11 @@ export default function PlayerSearch(props) {
         <Button onClick={handleSearch} backgroundColor={themeContext.mainBrand}>
           Search
         </Button>
-        {playerInfo && <p>{playerInfo.name_display_last_first}</p>}
       </InputGroup>
+      {playerInfo && <PlayerResult playerInfo={playerInfo} />}
+      {playerList && (
+        <PlayerList playerList={playerList} onSelect={handleSelect} />
+      )}
     </SearchLayout>
   );
 }
