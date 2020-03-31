@@ -20,7 +20,7 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={PlayerSearch} />
           <Route
-            path="/player-comparison/:playerId"
+            path="/player-comparison/:playerOneId/:playerTwoId"
             component={PlayerComparison}
           />
         </Switch>

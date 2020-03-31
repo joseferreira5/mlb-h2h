@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const PlayerListLayout = styled.ul`
-  grid-column: 1 / 2;
+  grid-column: ${props => props.column};
   grid-row: 2 / 4;
   overflow: auto;
 `;
@@ -19,7 +19,7 @@ const ListItem = styled.li`
   }
 `;
 
-export default function PlayerList({ playerList, onSelect }) {
+export default function PlayerList({ playerList, onSelect, column }) {
   const players = playerList.map(player => (
     <ListItem key={player.player_id} onClick={() => onSelect(player)}>
       <img
@@ -29,5 +29,5 @@ export default function PlayerList({ playerList, onSelect }) {
       <h2>{player.name_display_last_first}</h2>
     </ListItem>
   ));
-  return <PlayerListLayout>{players}</PlayerListLayout>;
+  return <PlayerListLayout column={column}>{players}</PlayerListLayout>;
 }
