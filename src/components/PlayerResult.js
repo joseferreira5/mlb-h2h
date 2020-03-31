@@ -5,13 +5,15 @@ const ResultLayout = styled.div`
   grid-column: ${props => props.column};
   grid-row: 2 / 3;
   align-self: center;
+  justify-self: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: ${props => props.theme.mainBrand};
-  border-radius: 2em;
+  border-radius: 1em;
   height: 100%;
+  min-width: 50%;
 
   h2 {
     color: ${props => props.theme.lightShade};

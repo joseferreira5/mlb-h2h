@@ -87,14 +87,10 @@ export default function PlayerSearch() {
       )}
       {playerOne && playerTwo && (
         <Link
+          className="compare-btn"
           to={`/player-comparison/${playerOne.player_id}/${playerTwo.player_id}`}
         >
-          <Button
-            className="compare-btn"
-            backgroundColor={themeContext.mainBrand}
-          >
-            Compare
-          </Button>
+          <Button backgroundColor={themeContext.mainBrand}>Compare</Button>
         </Link>
       )}
     </SearchLayout>
