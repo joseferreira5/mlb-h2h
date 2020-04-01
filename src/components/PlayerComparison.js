@@ -6,7 +6,7 @@ import axios from 'axios';
 import PlayerStatCard from './PlayerStatCard';
 import StatList from './StatList';
 import ToggleSwitch from './styles/ToggleSwitch';
-import filterStats from './utils/filterStats';
+import filterStats from '../utils/filterStats';
 
 const ComparisonLayout = styled.section`
   display: grid;
