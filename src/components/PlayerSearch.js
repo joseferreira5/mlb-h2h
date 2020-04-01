@@ -14,6 +14,8 @@ const SearchLayout = styled.section`
   grid-template-columns: 1fr 15% 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   height: 100%;
+  min-height: 100%;
+  overflow-y: auto;
 
   .compare-btn {
     grid-column: 2 / 3;
@@ -40,15 +42,17 @@ export default function PlayerSearch() {
   const [playerTwo, setPlayerTwo] = useState(null);
   const [playerList, setPlayerList] = useState(null);
   const themeContext = useContext(ThemeContext);
-  const baseUrl =
-    'http://lookup-service-prod.mlb.com/json/named.search_player_all.bam';
-  const queryStr = `?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
+  const baseUrl = 'http://lookup-service-prod.mlb.com/json/named';
+  const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
   const left = '1 / 2';
   const right = '3 / 4';
 
   const handleSearch = async e => {
     e.preventDefault();
-    const res = await axios.get(`${baseUrl}${queryStr}`);
+
+    if (userInput.length === 0) return null;
+
+    const res = await axios.get(`${baseUrl}${searchPlayer}`);
 
     if (res.data.search_player_all.queryResults.totalSize > 1) {
       playerOne ? setPlayerTwo(null) : setPlayerOne(null);

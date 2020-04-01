@@ -13,6 +13,8 @@ const ComparisonLayout = styled.section`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 10% 1fr;
   height: 100%;
+  min-height: 100%;
+  overflow-y: auto;
 `;
 
 const ControlLayout = styled.div`

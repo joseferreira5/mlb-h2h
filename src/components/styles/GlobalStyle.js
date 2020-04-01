@@ -29,6 +29,9 @@ const GlobalStyle = createGlobalStyle`
 
   #root {
     flex: 1 0 auto;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
   }
 `;
 
