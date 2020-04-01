@@ -55,13 +55,15 @@ export default function PlayerComparison() {
         'http://lookup-service-prod.mlb.com/json/named.sport_pitching_tm.bam';
       const res1 = await axios.get(`${baseUrl}${queryStr}'${playerOneId}'`);
       const res2 = await axios.get(`${baseUrl}${queryStr}'${playerTwoId}'`);
+      const stats1 = res1.data.sport_pitching_tm.queryResults.row;
+      const stats2 = res2.data.sport_pitching_tm.queryResults.row;
 
-      setPlayerOneStats(
-        filterStats(res1.data.sport_pitching_tm.queryResults.row)
-      );
-      setPlayerTwoStats(
-        filterStats(res2.data.sport_pitching_tm.queryResults.row)
-      );
+      if (stats1) {
+        setPlayerOneStats(filterStats(stats1));
+      }
+      if (stats2) {
+        setPlayerTwoStats(filterStats(stats2));
+      }
     }
 
     isPitcher ? getPitchingStats() : getBattingStats();

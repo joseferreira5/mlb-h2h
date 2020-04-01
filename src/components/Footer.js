@@ -4,10 +4,10 @@ import styled from 'styled-components';
 const StyledFooter = styled.footer`
   background-color: ${props => props.theme.darkShade};
   color: ${props => props.theme.lightShade};
+  flex-shrink: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
   height: 3em;
 
   a {

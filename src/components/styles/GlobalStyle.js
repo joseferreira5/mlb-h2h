@@ -15,10 +15,20 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
   }
   
+  html, body {
+    height: 100%;
+  }
+
   body {
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     color: #000;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #root {
+    flex: 1 0 auto;
   }
 `;
 
