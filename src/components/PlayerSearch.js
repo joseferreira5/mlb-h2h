@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import axios from 'axios';
 
-import InputGroup from './styles/InputGroup';
 import TextInput from './styles/TextInput';
 import Checkbox from './styles/Checkbox';
 import Button from './styles/Button';
@@ -24,6 +23,16 @@ const SearchLayout = styled.section`
   }
 `;
 
+const Form = styled.form`
+  grid-column: 1 / 4;
+  align-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50%;
+`;
+
 export default function PlayerSearch() {
   const [userInput, setUserInput] = useState('');
   const [active, setActive] = useState('Y');
@@ -37,17 +46,20 @@ export default function PlayerSearch() {
   const left = '1 / 2';
   const right = '3 / 4';
 
-  const handleSearch = async () => {
+  const handleSearch = async e => {
+    e.preventDefault();
     const res = await axios.get(`${baseUrl}${queryStr}`);
 
     if (res.data.search_player_all.queryResults.totalSize > 1) {
       playerOne ? setPlayerTwo(null) : setPlayerOne(null);
       setPlayerList(res.data.search_player_all.queryResults.row);
+      setUserInput('');
     } else {
       setPlayerList(null);
       playerOne
         ? setPlayerTwo(res.data.search_player_all.queryResults.row)
         : setPlayerOne(res.data.search_player_all.queryResults.row);
+      setUserInput('');
     }
   };
 
@@ -62,20 +74,21 @@ export default function PlayerSearch() {
 
   return (
     <SearchLayout>
-      <InputGroup>
+      <Form onSubmit={handleSearch}>
         <TextInput
           type="text"
           placeholder="Enter last name"
+          value={userInput}
           onChange={e => setUserInput(e.target.value)}
         />
         <label>
           <Checkbox onChange={handleCheck} defaultChecked />
           Active Player
         </label>
-        <Button onClick={handleSearch} backgroundColor={themeContext.mainBrand}>
+        <Button type="submit" backgroundColor={themeContext.mainBrand}>
           Search
         </Button>
-      </InputGroup>
+      </Form>
       {playerOne && <PlayerResult playerInfo={playerOne} column={left} />}
       {playerTwo && <PlayerResult playerInfo={playerTwo} column={right} />}
       {playerList && (
@@ -90,7 +103,7 @@ export default function PlayerSearch() {
           className="compare-btn"
           to={`/player-comparison/${playerOne.player_id}/${playerTwo.player_id}`}
         >
-          <Button backgroundColor={themeContext.mainBrand}>Compare</Button>
+          <Button backgroundColor={themeContext.fruitSalad}>Compare</Button>
         </Link>
       )}
     </SearchLayout>
