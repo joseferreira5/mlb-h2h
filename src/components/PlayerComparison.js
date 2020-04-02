@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import PlayerStatCard from './PlayerStatCard';
 import StatList from './StatList';
 import ToggleSwitch from './styles/ToggleSwitch';
 import ActionImg from './styles/ActionImg';
 import filterStats from '../utils/filterStats';
+import getYearsInService from '../utils/getYearsInService';
+import getBattingStats from '../utils/getBattingStats';
+import getPitchingStats from '../utils/getPitchingStats';
 
 const ComparisonLayout = styled.section`
   display: grid;
@@ -30,22 +32,27 @@ export default function PlayerComparison() {
   const { playerOneId, playerTwoId } = useParams();
   const [playerOneStats, setPlayerOneStats] = useState(null);
   const [playerTwoStats, setPlayerTwoStats] = useState(null);
+  const [playerOneYears, setPlayerOneYears] = useState(null);
+  const [playerTwoYears, setPlayerTwoYears] = useState(null);
   const [gameType, setGameType] = useState('R');
-  const [season, setSeason] = useState('2019');
+  const [season1, setSeason1] = useState('2019');
+  const [season2, setSeason2] = useState('2019');
   const [isPitcher, setIsPitcher] = useState(false);
   const left = '1 / 2';
   const right = '3 / 4';
 
   useEffect(() => {
-    const queryStr = `?league_list_id='mlb'&game_type='${gameType}'&season='${season}'&player_id=`;
+    async function setYearsInService() {
+      const yearsInService1 = await getYearsInService(playerOneId);
+      const yearsInService2 = await getYearsInService(playerTwoId);
 
-    async function getBattingStats() {
-      const baseUrl =
-        'http://lookup-service-prod.mlb.com/json/named.sport_hitting_tm.bam';
-      const res1 = await axios.get(`${baseUrl}${queryStr}'${playerOneId}'`);
-      const res2 = await axios.get(`${baseUrl}${queryStr}'${playerTwoId}'`);
-      const stats1 = res1.data.sport_hitting_tm.queryResults.row;
-      const stats2 = res2.data.sport_hitting_tm.queryResults.row;
+      setPlayerOneYears(yearsInService1);
+      setPlayerTwoYears(yearsInService2);
+    }
+
+    async function setBattingStats() {
+      const stats1 = await getBattingStats(playerOneId, gameType, season1);
+      const stats2 = await getBattingStats(playerTwoId, gameType, season2);
 
       if (stats1) {
         setPlayerOneStats(filterStats(stats1));
@@ -55,13 +62,9 @@ export default function PlayerComparison() {
       }
     }
 
-    async function getPitchingStats() {
-      const baseUrl =
-        'http://lookup-service-prod.mlb.com/json/named.sport_pitching_tm.bam';
-      const res1 = await axios.get(`${baseUrl}${queryStr}'${playerOneId}'`);
-      const res2 = await axios.get(`${baseUrl}${queryStr}'${playerTwoId}'`);
-      const stats1 = res1.data.sport_pitching_tm.queryResults.row;
-      const stats2 = res2.data.sport_pitching_tm.queryResults.row;
+    async function setPitchingStats() {
+      const stats1 = await getPitchingStats(playerOneId, gameType, season1);
+      const stats2 = await getPitchingStats(playerTwoId, gameType, season2);
 
       if (stats1) {
         setPlayerOneStats(filterStats(stats1));
@@ -70,9 +73,9 @@ export default function PlayerComparison() {
         setPlayerTwoStats(filterStats(stats2));
       }
     }
-
-    isPitcher ? getPitchingStats() : getBattingStats();
-  }, [playerOneId, playerTwoId, gameType, season, isPitcher]);
+    setYearsInService();
+    isPitcher ? setPitchingStats() : setBattingStats();
+  }, [playerOneId, playerTwoId, gameType, season1, season2, isPitcher]);
 
   const handleToggle = e => {
     e.target.checked ? setIsPitcher(true) : setIsPitcher(false);
@@ -81,6 +84,14 @@ export default function PlayerComparison() {
   return (
     <ComparisonLayout>
       <ControlLayout>
+        <select onChange={e => setSeason1(e.target.value)}>
+          {playerOneYears &&
+            playerOneYears.map(year => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+        </select>
         <ToggleSwitch onToggle={handleToggle} />
         <select onChange={e => setGameType(e.target.value)}>
           <option value="R">Regular Season</option>
@@ -92,8 +103,13 @@ export default function PlayerComparison() {
           <option value="L">League Championship</option>
           <option value="W">World Series</option>
         </select>
-        <select onChange={e => setSeason(e.target.value)}>
-          <option value="2019">2019</option>
+        <select onChange={e => setSeason2(e.target.value)}>
+          {playerTwoYears &&
+            playerTwoYears.map(year => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
         </select>
       </ControlLayout>
       {playerOneStats && playerTwoStats && (

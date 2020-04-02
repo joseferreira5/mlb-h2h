@@ -17,7 +17,7 @@ const StatsList = styled.div`
   justify-content: space-between;
 `;
 
-export default function PlayerStatCard({ playerStats, playerId, column }) {
+export default function PlayerStatCard({ playerStats, column }) {
   const statsList = Object.values(playerStats).map((stat, i) => (
     <p key={i}>{stat}</p>
   ));
