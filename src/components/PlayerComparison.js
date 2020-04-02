@@ -166,14 +166,22 @@ export default function PlayerComparison() {
             src={`https://securea.mlb.com/images/players/action_shots/${playerOneId}.jpg`}
             alt={playerOneId}
           />
-          <PlayerStatCard playerStats={playerOneStats} column={left} />
+          <PlayerStatCard
+            playerStats={playerOneStats}
+            column={left}
+            initialPosition={200}
+          />
           <StatList stats={playerOneStats ? playerOneStats : playerTwoStats} />
           <ActionImg
             column={right}
             src={`https://securea.mlb.com/images/players/action_shots/${playerTwoId}.jpg`}
             alt={playerTwoId}
           />
-          <PlayerStatCard playerStats={playerTwoStats} column={right} />
+          <PlayerStatCard
+            playerStats={playerTwoStats}
+            column={right}
+            initialPosition={-200}
+          />
         </>
       )}
     </ComparisonLayout>
