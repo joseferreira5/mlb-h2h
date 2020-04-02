@@ -16,15 +16,25 @@ const StyledLink = styled(Link)`
 
 const Title = styled.h1`
   font-size: 3rem;
+  font-weight: 800;
   font-family: 'Raleway', sans-serif;
   margin-left: 1.7em;
+
+  span {
+    font-family: 'Permanent Marker', cursive;
+    color: ${props => props.theme.mainBrand};
+  }
 `;
+
+const SubTitle = styled.p``;
 
 export default function Header() {
   return (
     <StyledHeader>
       <StyledLink to="/">
-        <Title>MLB H2H</Title>
+        <Title>
+          MLB <span>H2H</span>
+        </Title>
       </StyledLink>
     </StyledHeader>
   );

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ActionImg = styled.img`
+const TeamLogo = styled.img`
   object-fit: contain;
   max-width: 100%;
   max-height: 100%;
@@ -9,4 +9,4 @@ const ActionImg = styled.img`
   grid-row: 3 / 4;
 `;
 
-export default ActionImg;
+export default TeamLogo;

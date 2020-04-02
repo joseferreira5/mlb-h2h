@@ -7,7 +7,7 @@ import PlayerStatCard from '../components/PlayerStatCard';
 import StatList from '../components/StatList';
 import ToggleSwitch from '../components/styles/ToggleSwitch';
 import Select from '../components/styles/Select';
-import ActionImg from '../components/styles/ActionImg';
+import TeamLogo from '../components/styles/TeamLogo';
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
 import getPitchingStats from '../utils/getPitchingStats';
@@ -18,6 +18,7 @@ const ComparisonLayout = styled(motion.section)`
   display: grid;
   grid-template-columns: 1fr 20% 1fr;
   grid-template-rows: 6% 10% 10% 1fr;
+  grid-row-gap: 0.5em;
   height: 100%;
   min-height: 100%;
   overflow-y: auto;
@@ -48,19 +49,13 @@ const ControlLayout = styled.div`
   }
 `;
 
-const PlayerControlLayout = styled.div`
-  grid-column: 1 / 4;
-  grid-row: 2 / 3;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const IndividualControl = styled.div`
+const PlayerControl = styled.div`
+  grid-column: ${props => props.column};
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  height: 100%;
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   font-size: 1rem;
   font-weight: 700;
@@ -155,38 +150,35 @@ export default function PlayerComparison() {
           <ToggleSwitch onToggle={handleToggle} />
         </label>
       </ControlLayout>
-      <PlayerControlLayout>
-        {playerOneName && (
-          <IndividualControl>
-            <h2>{playerOneName}</h2>
-            <Select onChange={e => setSeason1(e.target.value)}>
-              {playerOneYears &&
-                playerOneYears.map(year => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-            </Select>
-          </IndividualControl>
-        )}
-        {playerTwoName && (
-          <IndividualControl>
-            <h2>{playerTwoName}</h2>
-            <Select onChange={e => setSeason2(e.target.value)}>
-              {playerTwoYears &&
-                playerTwoYears.map(year => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-            </Select>
-          </IndividualControl>
-        )}
-      </PlayerControlLayout>
-
+      {playerOneName && (
+        <PlayerControl column={left}>
+          <h2>{playerOneName}</h2>
+          <Select onChange={e => setSeason1(e.target.value)}>
+            {playerOneYears &&
+              playerOneYears.map(year => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+          </Select>
+        </PlayerControl>
+      )}
+      {playerTwoName && (
+        <PlayerControl column={right}>
+          <h2>{playerTwoName}</h2>
+          <Select onChange={e => setSeason2(e.target.value)}>
+            {playerTwoYears &&
+              playerTwoYears.map(year => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+          </Select>
+        </PlayerControl>
+      )}
       {playerOneStats && playerTwoStats && (
         <>
-          <ActionImg
+          <TeamLogo
             column={left}
             src={`https://www.mlbstatic.com/team-logos/${playerOneStats.team_id}.svg`}
             alt={playerOneId}
@@ -197,7 +189,7 @@ export default function PlayerComparison() {
             initialPosition={200}
           />
           <StatList stats={playerOneStats ? playerOneStats : playerTwoStats} />
-          <ActionImg
+          <TeamLogo
             column={right}
             src={`https://www.mlbstatic.com/team-logos/${playerTwoStats.team_id}.svg`}
             alt={playerTwoId}
