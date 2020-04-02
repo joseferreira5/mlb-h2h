@@ -44,7 +44,7 @@ export default function PlayerSearch() {
   const [playerTwo, setPlayerTwo] = useState(null);
   const [playerList, setPlayerList] = useState(null);
   const themeContext = useContext(ThemeContext);
-  const baseUrl = 'http://lookup-service-prod.mlb.com/json/named';
+  const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
   const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
   const left = '1 / 2';
   const right = '3 / 4';

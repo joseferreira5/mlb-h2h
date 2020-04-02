@@ -38,7 +38,7 @@ const ResultLayout = styled(motion.div)`
 
 export default function PlayerResult(props) {
   const [playerDetail, setPlayerDetail] = useState();
-  const baseUrl = 'http://lookup-service-prod.mlb.com';
+  const baseUrl = 'https://lookup-service-prod.mlb.com';
   const playerDeets = `/json/named.player_info.bam?sport_code='mlb'&player_id='${props.playerInfo.player_id}'`;
 
   useEffect(() => {
