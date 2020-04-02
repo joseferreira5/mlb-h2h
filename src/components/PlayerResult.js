@@ -4,17 +4,18 @@ import axios from 'axios';
 
 const ResultLayout = styled.div`
   grid-column: ${props => props.column};
-  grid-row: 2 / 3;
+  grid-row: 2 / 4;
   align-self: center;
   justify-self: center;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background-color: ${props => props.theme.mainBrand};
+  background-color: ${props => props.theme.darkShade};
   border-radius: 1em;
-  min-height: 100%;
+  min-height: 80%;
   min-width: 50%;
+  width: 10em;
 
   h2 {
     color: ${props => props.theme.lightShade};
@@ -24,6 +25,11 @@ const ResultLayout = styled.div`
 
   img {
     width: 8em;
+  }
+
+  p {
+    color: ${props => props.theme.lightShade};
+    font-weight: 700;
   }
 `;
 

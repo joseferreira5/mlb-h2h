@@ -6,12 +6,13 @@ import axios from 'axios';
 import PlayerStatCard from './PlayerStatCard';
 import StatList from './StatList';
 import ToggleSwitch from './styles/ToggleSwitch';
+import ActionImg from './styles/ActionImg';
 import filterStats from '../utils/filterStats';
 
 const ComparisonLayout = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 10% 1fr;
+  grid-template-rows: 8% 13% 1fr;
   height: 100%;
   min-height: 100%;
   overflow-y: auto;
@@ -43,13 +44,15 @@ export default function PlayerComparison() {
         'http://lookup-service-prod.mlb.com/json/named.sport_hitting_tm.bam';
       const res1 = await axios.get(`${baseUrl}${queryStr}'${playerOneId}'`);
       const res2 = await axios.get(`${baseUrl}${queryStr}'${playerTwoId}'`);
+      const stats1 = res1.data.sport_hitting_tm.queryResults.row;
+      const stats2 = res2.data.sport_hitting_tm.queryResults.row;
 
-      setPlayerOneStats(
-        filterStats(res1.data.sport_hitting_tm.queryResults.row)
-      );
-      setPlayerTwoStats(
-        filterStats(res2.data.sport_hitting_tm.queryResults.row)
-      );
+      if (stats1) {
+        setPlayerOneStats(filterStats(stats1));
+      }
+      if (stats2) {
+        setPlayerTwoStats(filterStats(stats2));
+      }
     }
 
     async function getPitchingStats() {
@@ -95,8 +98,18 @@ export default function PlayerComparison() {
       </ControlLayout>
       {playerOneStats && playerTwoStats && (
         <>
+          <ActionImg
+            column={left}
+            src={`https://securea.mlb.com/images/players/action_shots/${playerOneId}.jpg`}
+            alt={playerOneId}
+          />
           <PlayerStatCard playerStats={playerOneStats} column={left} />
-          <StatList stats={playerOneStats} />
+          <StatList stats={playerOneStats ? playerOneStats : playerTwoStats} />
+          <ActionImg
+            column={right}
+            src={`https://securea.mlb.com/images/players/action_shots/${playerTwoId}.jpg`}
+            alt={playerTwoId}
+          />
           <PlayerStatCard playerStats={playerTwoStats} column={right} />
         </>
       )}

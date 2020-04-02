@@ -11,7 +11,7 @@ import PlayerList from './PlayerList';
 
 const SearchLayout = styled.section`
   display: grid;
-  grid-template-columns: 1fr 15% 1fr;
+  grid-template-columns: 1fr 10% 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   height: 100%;
   min-height: 100%;
@@ -20,7 +20,7 @@ const SearchLayout = styled.section`
   .compare-btn {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
-    align-self: center;
+    align-self: start;
     justify-self: center;
   }
 `;
@@ -33,6 +33,7 @@ const Form = styled.form`
   justify-content: space-around;
   align-items: center;
   height: 50%;
+  padding: 0 1em;
 `;
 
 export default function PlayerSearch() {

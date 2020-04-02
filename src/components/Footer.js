@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
-  background-color: ${props => props.theme.darkShade};
+  background-color: #0b0d1d;
   color: ${props => props.theme.lightShade};
   flex-shrink: 0;
   display: flex;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StatsContainer = styled.div`
   align-self: center;
   grid-column: 2 / 3;
-  grid-row: 2 / 3;
+  grid-row: 3 / 4;
   display: flex;
   flex-direction: column;
   align-items: center;
