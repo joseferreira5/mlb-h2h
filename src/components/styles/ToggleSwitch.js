@@ -6,6 +6,7 @@ const Switch = styled.label`
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin-left: 0.2em;
 
   input {
     opacity: 0;

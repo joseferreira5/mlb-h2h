@@ -6,15 +6,16 @@ import PlayerStatCard from './PlayerStatCard';
 import StatList from './StatList';
 import ToggleSwitch from './styles/ToggleSwitch';
 import ActionImg from './styles/ActionImg';
-import filterStats from '../utils/filterStats';
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
 import getPitchingStats from '../utils/getPitchingStats';
+import getPlayerName from '../utils/getPlayerName';
+import filterStats from '../utils/filterStats';
 
 const ComparisonLayout = styled.section`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 8% 13% 1fr;
+  grid-template-columns: 1fr 20% 1fr;
+  grid-template-rows: 5% 5% 13% 1fr;
   height: 100%;
   min-height: 100%;
   overflow-y: auto;
@@ -26,6 +27,20 @@ const ControlLayout = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+
+  label {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const PlayerControlLayout = styled.div`
+  grid-column: 1 / 4;
+  grid-row: 2 / 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em;
 `;
 
 export default function PlayerComparison() {
@@ -34,6 +49,8 @@ export default function PlayerComparison() {
   const [playerTwoStats, setPlayerTwoStats] = useState(null);
   const [playerOneYears, setPlayerOneYears] = useState(null);
   const [playerTwoYears, setPlayerTwoYears] = useState(null);
+  const [playerOneName, setPlayerOneName] = useState(null);
+  const [playerTwoName, setPlayerTwoName] = useState(null);
   const [gameType, setGameType] = useState('R');
   const [season1, setSeason1] = useState('2019');
   const [season2, setSeason2] = useState('2019');
@@ -42,6 +59,14 @@ export default function PlayerComparison() {
   const right = '3 / 4';
 
   useEffect(() => {
+    async function setPlayerNames() {
+      const playerName1 = await getPlayerName(playerOneId);
+      const playerName2 = await getPlayerName(playerTwoId);
+
+      setPlayerOneName(playerName1);
+      setPlayerTwoName(playerName2);
+    }
+
     async function setYearsInService() {
       const yearsInService1 = await getYearsInService(playerOneId);
       const yearsInService2 = await getYearsInService(playerTwoId);
@@ -73,6 +98,7 @@ export default function PlayerComparison() {
         setPlayerTwoStats(filterStats(stats2));
       }
     }
+    setPlayerNames();
     setYearsInService();
     isPitcher ? setPitchingStats() : setBattingStats();
   }, [playerOneId, playerTwoId, gameType, season1, season2, isPitcher]);
@@ -84,15 +110,10 @@ export default function PlayerComparison() {
   return (
     <ComparisonLayout>
       <ControlLayout>
-        <select onChange={e => setSeason1(e.target.value)}>
-          {playerOneYears &&
-            playerOneYears.map(year => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-        </select>
-        <ToggleSwitch onToggle={handleToggle} />
+        <label>
+          See {isPitcher ? 'Batting' : 'Pitching'}
+          <ToggleSwitch onToggle={handleToggle} />
+        </label>
         <select onChange={e => setGameType(e.target.value)}>
           <option value="R">Regular Season</option>
           <option value="S">Spring Training</option>
@@ -103,15 +124,36 @@ export default function PlayerComparison() {
           <option value="L">League Championship</option>
           <option value="W">World Series</option>
         </select>
-        <select onChange={e => setSeason2(e.target.value)}>
-          {playerTwoYears &&
-            playerTwoYears.map(year => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-        </select>
       </ControlLayout>
+      <PlayerControlLayout>
+        {playerOneName && (
+          <label>
+            <select onChange={e => setSeason1(e.target.value)}>
+              {playerOneYears &&
+                playerOneYears.map(year => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+            </select>{' '}
+            {playerOneName}
+          </label>
+        )}
+        {playerTwoName && (
+          <label>
+            {playerTwoName}{' '}
+            <select onChange={e => setSeason2(e.target.value)}>
+              {playerTwoYears &&
+                playerTwoYears.map(year => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
+      </PlayerControlLayout>
+
       {playerOneStats && playerTwoStats && (
         <>
           <ActionImg

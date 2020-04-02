@@ -13,6 +13,7 @@ const PlayerListLayout = styled.ul`
   &::-webkit-scrollbar {
     background-color: #0b0d1d;
     border-radius: 0 1em 1em 0;
+    width: 0.8em;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -27,7 +28,7 @@ const ListItem = styled.li`
   align-items: center;
   width: 100%;
   padding: 0.5em 1em;
-  font-size: 1.2rem;
+  font-size: 1rem;
   border-bottom: 1px solid #000;
   color: ${props => props.theme.lightShade};
 

@@ -21,6 +21,7 @@ const ResultLayout = styled.div`
     color: ${props => props.theme.lightShade};
     font-weight: 700;
     font-size: 1.2rem;
+    text-align: center;
   }
 
   img {

@@ -3,11 +3,12 @@ import styled from 'styled-components';
 
 const StatCardLayout = styled.div`
   grid-column: ${props => props.column};
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   justify-self: center;
   align-self: center;
   display: flex;
   flex-direction: column;
+  margin-top: 1em;
 `;
 
 const StatsList = styled.div`
@@ -15,6 +16,10 @@ const StatsList = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  p {
+    margin-bottom: 1em;
+  }
 `;
 
 export default function PlayerStatCard({ playerStats, column }) {

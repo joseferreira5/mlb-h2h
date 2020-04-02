@@ -4,10 +4,17 @@ import styled from 'styled-components';
 const StatsContainer = styled.div`
   align-self: center;
   grid-column: 2 / 3;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 1em;
+  width: 100%;
+
+  p {
+    margin-bottom: 1em;
+    font-weight: 700;
+  }
 `;
 
 export default function StatList({ stats }) {
