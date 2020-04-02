@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   background-color: ${props => props.backgroundColor};
   color: ${props => props.theme.lightShade};
   font-family: 'Roboto', Arial, Helvetica, sans-serif;

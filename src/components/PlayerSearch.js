@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 
 import TextInput from './styles/TextInput';
@@ -125,7 +125,16 @@ export default function PlayerSearch() {
           className="compare-btn"
           to={`/player-comparison/${playerOne.player_id}/${playerTwo.player_id}`}
         >
-          <Button backgroundColor={themeContext.fruitSalad}>Compare</Button>
+          <AnimatePresence>
+            <Button
+              backgroundColor={themeContext.fruitSalad}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              Compare
+            </Button>
+          </AnimatePresence>
         </Link>
       )}
     </SearchLayout>
