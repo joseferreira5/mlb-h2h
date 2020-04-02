@@ -99,8 +99,20 @@ export default function PlayerSearch() {
           Search
         </Button>
       </Form>
-      {playerOne && <PlayerResult playerInfo={playerOne} column={left} />}
-      {playerTwo && <PlayerResult playerInfo={playerTwo} column={right} />}
+      {playerOne && (
+        <PlayerResult
+          playerInfo={playerOne}
+          column={left}
+          initialPosition={playerOne ? -200 : 200}
+        />
+      )}
+      {playerTwo && (
+        <PlayerResult
+          playerInfo={playerTwo}
+          column={right}
+          initialPosition={playerOne ? 200 : -200}
+        />
+      )}
       {playerList && (
         <PlayerList
           playerList={playerList}

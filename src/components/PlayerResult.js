@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 
-const ResultLayout = styled.div`
+const ResultLayout = styled(motion.div)`
   grid-column: ${props => props.column};
   grid-row: 2 / 4;
   align-self: center;
@@ -16,6 +17,7 @@ const ResultLayout = styled.div`
   min-height: 80%;
   min-width: 50%;
   width: 10em;
+  z-index: 1;
 
   h2 {
     color: ${props => props.theme.lightShade};
@@ -48,33 +50,39 @@ export default function PlayerResult(props) {
   }, [playerDeets]);
 
   return (
-    <ResultLayout column={props.column}>
-      {playerDetail && (
-        <>
-          <h2>
-            {playerDetail.name_display_first_last_html} #
-            {playerDetail.jersey_number}
-          </h2>
-          <img
-            src={`https://securea.mlb.com/mlb/images/players/head_shot/${props.playerInfo.player_id}.jpg`}
-            alt={props.playerInfo.name_display_last_first}
-          />
-          <p>Position: {playerDetail.primary_position_txt}</p>
-          <p>
-            <span>Bats: {playerDetail.bats}</span>
-            {' | '}
-            <span>Throws: {playerDetail.throws}</span>
-          </p>
-          <p>
-            <span>Age: {playerDetail.age}</span>
-            {' | '}
-            <span>
-              Height: {playerDetail.height_feet}
-              {playerDetail.height_inches}
-            </span>
-          </p>
-        </>
-      )}
-    </ResultLayout>
+    <AnimatePresence>
+      <ResultLayout
+        column={props.column}
+        initial={{ x: props.initialPosition, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {playerDetail && (
+          <>
+            <h2>
+              {playerDetail.name_display_first_last_html} #
+              {playerDetail.jersey_number}
+            </h2>
+            <img
+              src={`https://securea.mlb.com/mlb/images/players/head_shot/${props.playerInfo.player_id}.jpg`}
+              alt={props.playerInfo.name_display_last_first}
+            />
+            <p>Position: {playerDetail.primary_position_txt}</p>
+            <p>
+              <span>Bats: {playerDetail.bats}</span>
+              {' | '}
+              <span>Throws: {playerDetail.throws}</span>
+            </p>
+            <p>
+              <span>Age: {playerDetail.age}</span>
+              {' | '}
+              <span>
+                Height: {playerDetail.height_feet}'{playerDetail.height_inches}"
+              </span>
+            </p>
+          </>
+        )}
+      </ResultLayout>
+    </AnimatePresence>
   );
 }
