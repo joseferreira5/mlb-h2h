@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-import PlayerStatCard from './PlayerStatCard';
-import StatList from './StatList';
-import ToggleSwitch from './styles/ToggleSwitch';
-import ActionImg from './styles/ActionImg';
+import PlayerStatCard from '../components/PlayerStatCard';
+import StatList from '../components/StatList';
+import ToggleSwitch from '../components/styles/ToggleSwitch';
+import ActionImg from '../components/styles/ActionImg';
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
 import getPitchingStats from '../utils/getPitchingStats';

@@ -4,11 +4,11 @@ import styled, { ThemeContext } from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import axios from 'axios';
 
-import TextInput from './styles/TextInput';
-import Checkbox from './styles/Checkbox';
-import Button from './styles/Button';
-import PlayerResult from './PlayerResult';
-import PlayerList from './PlayerList';
+import TextInput from '../components/styles/TextInput';
+import Checkbox from '../components/styles/Checkbox';
+import Button from '../components/styles/Button';
+import PlayerResult from '../components/PlayerResult';
+import PlayerList from '../components/PlayerList';
 
 const SearchLayout = styled(motion.section)`
   display: grid;
