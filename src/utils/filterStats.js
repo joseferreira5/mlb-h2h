@@ -7,11 +7,12 @@ const props = [
   'team_seq',
   'season',
   'player_id',
-  'team_id',
   'end_date',
   'league_short',
   'sport',
-  'team_short'
+  'team_short',
+  'team_abbrev',
+  'league'
 ];
 
 export default function filterStats(res) {

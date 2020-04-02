@@ -17,7 +17,7 @@ const StyledLink = styled(Link)`
 const Title = styled.h1`
   font-size: 3rem;
   font-family: 'Raleway', sans-serif;
-  margin-left: 2em;
+  margin-left: 1.7em;
 `;
 
 export default function Header() {

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import PlayerStatCard from '../components/PlayerStatCard';
 import StatList from '../components/StatList';
 import ToggleSwitch from '../components/styles/ToggleSwitch';
+import Select from '../components/styles/Select';
 import ActionImg from '../components/styles/ActionImg';
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
@@ -16,10 +17,22 @@ import filterStats from '../utils/filterStats';
 const ComparisonLayout = styled(motion.section)`
   display: grid;
   grid-template-columns: 1fr 20% 1fr;
-  grid-template-rows: 5% 5% 13% 1fr;
+  grid-template-rows: 6% 10% 10% 1fr;
   height: 100%;
   min-height: 100%;
   overflow-y: auto;
+  padding: 0.2em;
+
+  &::-webkit-scrollbar {
+    background-color: #fff;
+    border-radius: 1em;
+    width: 0.2em;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${props => props.theme.mainBrand};
+    border-radius: 1em;
+  }
 `;
 
 const ControlLayout = styled.div`
@@ -39,9 +52,21 @@ const PlayerControlLayout = styled.div`
   grid-column: 1 / 4;
   grid-row: 2 / 3;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding: 0.5em;
+`;
+
+const IndividualControl = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  h2 {
+    margin-bottom: 0.2em;
+  }
 `;
 
 export default function PlayerComparison() {
@@ -115,11 +140,7 @@ export default function PlayerComparison() {
       exit={{ opacity: 0 }}
     >
       <ControlLayout>
-        <label>
-          See {isPitcher ? 'Batting' : 'Pitching'}
-          <ToggleSwitch onToggle={handleToggle} />
-        </label>
-        <select onChange={e => setGameType(e.target.value)}>
+        <Select onChange={e => setGameType(e.target.value)}>
           <option value="R">Regular Season</option>
           <option value="S">Spring Training</option>
           <option value="E">Exhibition</option>
@@ -128,34 +149,38 @@ export default function PlayerComparison() {
           <option value="F">First Round (Wild Card)</option>
           <option value="L">League Championship</option>
           <option value="W">World Series</option>
-        </select>
+        </Select>
+        <label>
+          See {isPitcher ? 'Batting' : 'Pitching'}
+          <ToggleSwitch onToggle={handleToggle} />
+        </label>
       </ControlLayout>
       <PlayerControlLayout>
         {playerOneName && (
-          <label>
-            <select onChange={e => setSeason1(e.target.value)}>
+          <IndividualControl>
+            <h2>{playerOneName}</h2>
+            <Select onChange={e => setSeason1(e.target.value)}>
               {playerOneYears &&
                 playerOneYears.map(year => (
                   <option key={year} value={year}>
                     {year}
                   </option>
                 ))}
-            </select>{' '}
-            {playerOneName}
-          </label>
+            </Select>
+          </IndividualControl>
         )}
         {playerTwoName && (
-          <label>
-            {playerTwoName}{' '}
-            <select onChange={e => setSeason2(e.target.value)}>
+          <IndividualControl>
+            <h2>{playerTwoName}</h2>
+            <Select onChange={e => setSeason2(e.target.value)}>
               {playerTwoYears &&
                 playerTwoYears.map(year => (
                   <option key={year} value={year}>
                     {year}
                   </option>
                 ))}
-            </select>
-          </label>
+            </Select>
+          </IndividualControl>
         )}
       </PlayerControlLayout>
 
@@ -163,7 +188,7 @@ export default function PlayerComparison() {
         <>
           <ActionImg
             column={left}
-            src={`https://securea.mlb.com/images/players/action_shots/${playerOneId}.jpg`}
+            src={`https://www.mlbstatic.com/team-logos/${playerOneStats.team_id}.svg`}
             alt={playerOneId}
           />
           <PlayerStatCard
@@ -174,7 +199,7 @@ export default function PlayerComparison() {
           <StatList stats={playerOneStats ? playerOneStats : playerTwoStats} />
           <ActionImg
             column={right}
-            src={`https://securea.mlb.com/images/players/action_shots/${playerTwoId}.jpg`}
+            src={`https://www.mlbstatic.com/team-logos/${playerTwoStats.team_id}.svg`}
             alt={playerTwoId}
           />
           <PlayerStatCard

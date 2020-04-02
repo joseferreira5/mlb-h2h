@@ -9,6 +9,7 @@ const StyledFooter = styled.footer`
   justify-content: space-around;
   align-items: center;
   height: 3em;
+  font-size: 0.8rem;
 
   a {
     text-decoration: none;
