@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 
 import TextInput from './styles/TextInput';
@@ -9,7 +10,7 @@ import Button from './styles/Button';
 import PlayerResult from './PlayerResult';
 import PlayerList from './PlayerList';
 
-const SearchLayout = styled.section`
+const SearchLayout = styled(motion.section)`
   display: grid;
   grid-template-columns: 1fr 10% 1fr;
   grid-template-rows: 1fr 1fr 1fr;
@@ -78,7 +79,11 @@ export default function PlayerSearch() {
   };
 
   return (
-    <SearchLayout>
+    <SearchLayout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <Form onSubmit={handleSearch}>
         <TextInput
           type="text"

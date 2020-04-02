@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 import PlayerStatCard from './PlayerStatCard';
 import StatList from './StatList';
@@ -12,7 +13,7 @@ import getPitchingStats from '../utils/getPitchingStats';
 import getPlayerName from '../utils/getPlayerName';
 import filterStats from '../utils/filterStats';
 
-const ComparisonLayout = styled.section`
+const ComparisonLayout = styled(motion.section)`
   display: grid;
   grid-template-columns: 1fr 20% 1fr;
   grid-template-rows: 5% 5% 13% 1fr;
@@ -108,7 +109,11 @@ export default function PlayerComparison() {
   };
 
   return (
-    <ComparisonLayout>
+    <ComparisonLayout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <ControlLayout>
         <label>
           See {isPitcher ? 'Batting' : 'Pitching'}
