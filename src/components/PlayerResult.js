@@ -14,7 +14,7 @@ const ResultLayout = styled(motion.div)`
   align-items: center;
   background-color: ${props => props.theme.darkShade};
   border-radius: 1em;
-  min-height: 70%;
+  min-height: 55%;
   min-width: 50%;
   width: 10em;
   z-index: 1;
