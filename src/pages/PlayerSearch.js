@@ -80,7 +80,7 @@ export default function PlayerSearch() {
           Search
         </Button>
       </Form>
-      {playerOne === null && (
+      {playerOne === null && playerList === null && (
         <Message>
           Welcome to MLB Head to Head! An easier way to look up and compare
           player stats. Enter a players last name to get started!
