@@ -12,9 +12,9 @@ const PlayerListLayout = styled(motion.ul)`
   overflow-y: auto;
 
   &::-webkit-scrollbar {
-    background-color: #0b0d1d;
+    background-color: ${props => props.theme.darkShade};
     border-radius: 0 1em 1em 0;
-    width: 0.8em;
+    width: 0.5em;
   }
 
   &::-webkit-scrollbar-thumb {

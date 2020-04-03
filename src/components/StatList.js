@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StatsContainer = styled.div`
-  align-self: center;
   grid-column: 2 / 3;
   grid-row: 4 / 5;
   display: flex;
