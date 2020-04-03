@@ -13,6 +13,8 @@ import getBattingStats from '../utils/getBattingStats';
 import getPitchingStats from '../utils/getPitchingStats';
 import getPlayerName from '../utils/getPlayerName';
 import filterStats from '../utils/filterStats';
+import noBattingStats from '../utils/noBattingStats.json';
+import noPitchingStats from '../utils/noPitchingStats.json';
 
 const ComparisonLayout = styled(motion.section)`
   display: grid;
@@ -55,7 +57,7 @@ const PlayerControl = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100%;
+  height: 80%;
   font-family: 'Roboto', Arial, Helvetica, sans-serif;
   font-size: 1rem;
   font-weight: 700;
@@ -100,24 +102,26 @@ export default function PlayerComparison() {
       const stats1 = await getBattingStats(playerOneId, gameType, season1);
       const stats2 = await getBattingStats(playerTwoId, gameType, season2);
 
-      if (stats1) {
-        setPlayerOneStats(filterStats(stats1));
-      }
-      if (stats2) {
-        setPlayerTwoStats(filterStats(stats2));
-      }
+      stats1
+        ? setPlayerOneStats(filterStats(stats1))
+        : setPlayerOneStats(filterStats(noBattingStats));
+
+      stats2
+        ? setPlayerTwoStats(filterStats(stats2))
+        : setPlayerTwoStats(filterStats(noBattingStats));
     }
 
     async function setPitchingStats() {
       const stats1 = await getPitchingStats(playerOneId, gameType, season1);
       const stats2 = await getPitchingStats(playerTwoId, gameType, season2);
 
-      if (stats1) {
-        setPlayerOneStats(filterStats(stats1));
-      }
-      if (stats2) {
-        setPlayerTwoStats(filterStats(stats2));
-      }
+      stats1
+        ? setPlayerOneStats(filterStats(stats1))
+        : setPlayerOneStats(filterStats(noPitchingStats));
+
+      stats2
+        ? setPlayerTwoStats(filterStats(stats2))
+        : setPlayerTwoStats(filterStats(noPitchingStats));
     }
     setPlayerNames();
     setYearsInService();
@@ -180,7 +184,11 @@ export default function PlayerComparison() {
         <>
           <TeamLogo
             column={left}
-            src={`https://www.mlbstatic.com/team-logos/${playerOneStats.team_id}.svg`}
+            src={
+              playerOneStats.team_id === '0'
+                ? 'https://www.mlbstatic.com/team-logos/league-on-dark/1.svg'
+                : `https://www.mlbstatic.com/team-logos/${playerOneStats.team_id}.svg`
+            }
             alt={playerOneId}
           />
           <PlayerStatCard
@@ -188,10 +196,20 @@ export default function PlayerComparison() {
             column={left}
             initialPosition={200}
           />
-          <StatList stats={playerOneStats ? playerOneStats : playerTwoStats} />
+          <StatList
+            stats={
+              isPitcher
+                ? filterStats(noPitchingStats)
+                : filterStats(noBattingStats)
+            }
+          />
           <TeamLogo
             column={right}
-            src={`https://www.mlbstatic.com/team-logos/${playerTwoStats.team_id}.svg`}
+            src={
+              playerTwoStats.team_id === '0'
+                ? 'https://www.mlbstatic.com/team-logos/league-on-dark/1.svg'
+                : `https://www.mlbstatic.com/team-logos/${playerTwoStats.team_id}.svg`
+            }
             alt={playerTwoId}
           />
           <PlayerStatCard

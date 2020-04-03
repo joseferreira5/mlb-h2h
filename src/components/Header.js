@@ -26,7 +26,10 @@ const Title = styled.h1`
   }
 `;
 
-const SubTitle = styled.p``;
+const SubTitle = styled.p`
+  font-size: 1rem;
+  margin-left: 4.2em;
+`;
 
 export default function Header() {
   return (
@@ -35,6 +38,7 @@ export default function Header() {
         <Title>
           MLB <span>H2H</span>
         </Title>
+        <SubTitle>Head to Head Player Comparison</SubTitle>
       </StyledLink>
     </StyledHeader>
   );

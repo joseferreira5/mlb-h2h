@@ -24,7 +24,7 @@ export default function Footer(props) {
         Data provided by{' '}
         <a href="https://appac.github.io/mlb-data-api-docs/">MLB Data API</a>
       </p>
-      <p>&copy; Jose Ferreira 2020</p>
+      <p>Jose Ferreira &copy; 2020</p>
     </StyledFooter>
   );
 }

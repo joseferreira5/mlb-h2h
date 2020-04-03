@@ -37,6 +37,16 @@ const Form = styled.form`
   padding: 0 1em;
 `;
 
+const Message = styled(motion.p)`
+  grid-column: 1 / 4;
+  justify-content: center;
+  padding: 1em;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  text-align: center;
+  height: 100%;
+`;
+
 export default function PlayerSearch() {
   const [userInput, setUserInput] = useState('');
   const [active, setActive] = useState('Y');
@@ -99,6 +109,12 @@ export default function PlayerSearch() {
           Search
         </Button>
       </Form>
+      {playerOne === null && (
+        <Message>
+          Welcome to MLB Head to Head! An easier way to look up and compare
+          player stats. Enter a players last name to get started!
+        </Message>
+      )}
       {playerOne && (
         <PlayerResult
           playerInfo={playerOne}
