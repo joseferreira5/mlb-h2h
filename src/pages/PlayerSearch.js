@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { ThemeContext } from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -55,6 +55,8 @@ export default function PlayerSearch() {
   const [playerTwo, setPlayerTwo] = useState(null);
   const [playerList, setPlayerList] = useState(null);
   const themeContext = useContext(ThemeContext);
+  const inputEl = useRef(null);
+
   const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
   const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
   const left = '1 / 2';
@@ -62,6 +64,7 @@ export default function PlayerSearch() {
 
   const handleSearch = async e => {
     e.preventDefault();
+    inputEl.current.blur();
 
     if (userInput.length === 0) return null;
 
@@ -100,6 +103,7 @@ export default function PlayerSearch() {
           type="text"
           placeholder="Enter last name"
           value={userInput}
+          ref={inputEl}
           onChange={e => setUserInput(e.target.value)}
         />
         <label>

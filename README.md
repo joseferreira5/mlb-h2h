@@ -20,18 +20,42 @@ mlb-h2h
       |___ index.html
 
 |___ src/
+
       |___ components/
             |___ Footer.js
             |___ Header.js
-            |___ PlayerCard.js
-            |___ PlayerComparison.js
             |___ PlayerList.js
-            |___ PlayerSearch.js
+            |___ PlayerResult.js
+            |___ PlayerStatCard.js
+            |___ StatList.js
 
             |___  styles/
+                  |___ Button.js
+                  |___ Button.stories.js
+                  |___ Checkbox.js
+                  |___ Checkbox.stories.js
                   |___ GlobalStyle.js
                   |___ Main.js
+                  |___ Main.js
+                  |___ Select.js
+                  |___ Select.stories.js
+                  |___ TeamLogo.js
+                  |___ TextInput.js
                   |___ theme.js
+                  |___ ToggleSwitch.js
+
+      |___ pages/
+            |___ PlayerComparison.js
+            |___ PlayerSearch.js
+
+      |___  utils/
+            |___ filterStats.js
+            |___ getBattingStats.js
+            |___ getPitchingStats.js
+            |___ getPlayerName.js
+            |___ getYearInService.js
+            |___ noBattingStats.json
+            |___ noPitchingStats.json
 
       |___ App.js
 
