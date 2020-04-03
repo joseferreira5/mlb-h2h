@@ -1,52 +1,18 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { ThemeContext } from 'styled-components';
-import { AnimatePresence, motion } from 'framer-motion';
+import { ThemeContext } from 'styled-components';
+import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
-import TextInput from '../components/styles/TextInput';
-import Checkbox from '../components/styles/Checkbox';
-import Button from '../components/styles/Button';
 import PlayerResult from '../components/PlayerResult';
 import PlayerList from '../components/PlayerList';
 
-const SearchLayout = styled(motion.section)`
-  display: grid;
-  grid-template-columns: 1fr 10% 1fr;
-  grid-template-rows: 15% 1fr 1fr;
-  grid-row-gap: 2em;
-  height: 100%;
-  min-height: 100%;
-  overflow-y: auto;
-
-  .compare-btn {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    align-self: start;
-    justify-self: center;
-  }
-`;
-
-const Form = styled.form`
-  grid-column: 1 / 4;
-  align-self: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  padding: 0 1em;
-`;
-
-const Message = styled(motion.p)`
-  grid-column: 1 / 4;
-  justify-content: center;
-  padding: 1em;
-  font-size: 1.6rem;
-  line-height: 1.3;
-  text-align: center;
-  height: 100%;
-`;
+import SearchLayout from '../components/styles/SearchLayout';
+import Form from '../components/styles/Form';
+import TextInput from '../components/styles/TextInput';
+import Checkbox from '../components/styles/Checkbox';
+import Button from '../components/styles/Button';
+import Message from '../components/styles/Message';
 
 export default function PlayerSearch() {
   const [userInput, setUserInput] = useState('');

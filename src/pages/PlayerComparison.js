@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 
-import PlayerStatCard from '../components/PlayerStatCard';
 import StatList from '../components/StatList';
+import PlayerStatCard from '../components/PlayerStatCard';
+
+import ComparisonLayout from '../components/styles/ComparisonLayout';
+import ControlLayout from '../components/styles/ControlLayout';
+import PlayerControl from '../components/styles/PlayerControl';
 import ToggleSwitch from '../components/styles/ToggleSwitch';
 import Select from '../components/styles/Select';
 import TeamLogo from '../components/styles/TeamLogo';
+
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
 import getPitchingStats from '../utils/getPitchingStats';
@@ -15,56 +18,6 @@ import getPlayerName from '../utils/getPlayerName';
 import filterStats from '../utils/filterStats';
 import noBattingStats from '../utils/noBattingStats.json';
 import noPitchingStats from '../utils/noPitchingStats.json';
-
-const ComparisonLayout = styled(motion.section)`
-  display: grid;
-  grid-template-columns: 1fr 20% 1fr;
-  grid-template-rows: 6% 10% 10% 1fr;
-  grid-row-gap: 0.5em;
-  height: 100%;
-  min-height: 100%;
-  overflow-y: auto;
-  padding: 0.2em;
-
-  &::-webkit-scrollbar {
-    background-color: #fff;
-    border-radius: 1em;
-    width: 0.2em;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: ${props => props.theme.mainBrand};
-    border-radius: 1em;
-  }
-`;
-
-const ControlLayout = styled.div`
-  grid-column: 1 / 4;
-  grid-row: 1 / 2;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  label {
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const PlayerControl = styled.div`
-  grid-column: ${props => props.column};
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 80%;
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  h2 {
-    margin-bottom: 0.2em;
-  }
-`;
 
 export default function PlayerComparison() {
   const { playerOneId, playerTwoId } = useParams();

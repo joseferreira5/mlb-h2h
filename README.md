@@ -6,15 +6,19 @@ MLB Head 2 Head is a web application with the intent to settle arguments between
 
 <br>
 
-## Wireframes
+#### Wireframes
 
 ![alt text](./wireframes/MLB-H2H-mobile.png)
 ![alt text](./wireframes/MLB-H2H.png)
+
+<br>
 
 #### Component Hierarchy
 
 ```
 mlb-h2h
+|___ .storybook/
+      |___ main.js
 
 |___ public/
       |___ index.html
@@ -34,9 +38,14 @@ mlb-h2h
                   |___ Button.stories.js
                   |___ Checkbox.js
                   |___ Checkbox.stories.js
+                  |___ ComparisonLayout.js
+                  |___ ControlLayout.js
+                  |___ Form.js
                   |___ GlobalStyle.js
                   |___ Main.js
-                  |___ Main.js
+                  |___ Message.js
+                  |___ PlayerLayout.js
+                  |___ SearchLayout.js
                   |___ Select.js
                   |___ Select.stories.js
                   |___ TeamLogo.js
@@ -74,6 +83,7 @@ mlb-h2h
 |       axios       | _To make get requests to API_     |
 |   framer-motion   | _Page transitions and animations_ |
 | react-router-dom  | _Link and Route components_       |
+|     storybook     | _Component library_               |
 | styled-components | _For CSS in JS and global styles_ |
 |   styled-reset    | _CSS reset._                      |
 
