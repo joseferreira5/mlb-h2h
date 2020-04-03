@@ -7,18 +7,30 @@ const StyledHeader = styled.header`
   align-items: center;
   background-color: black;
   height: 5em;
+
+  @media (max-width: 420px) {
+    justify-content: center;
+    margin: 0;
+  }
 `;
 
 const StyledLink = styled(Link)`
   color: #fff;
   text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 5em;
+
+  @media (max-width: 420px) {
+    margin: 0;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 3rem;
   font-weight: 800;
   font-family: 'Raleway', sans-serif;
-  margin-left: 1.7em;
 
   span {
     font-family: 'Permanent Marker', cursive;
@@ -28,7 +40,6 @@ const Title = styled.h1`
 
 const SubTitle = styled.p`
   font-size: 1rem;
-  margin-left: 4.2em;
 `;
 
 export default function Header() {
