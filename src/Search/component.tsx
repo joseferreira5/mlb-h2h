@@ -4,15 +4,14 @@ import { ThemeContext } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
-import PlayerResult from '../components/PlayerResult';
-import PlayerList from '../components/PlayerList';
-
-import SearchLayout from '../components/styles/SearchLayout';
-import Form from '../components/styles/Form';
-import TextInput from '../components/styles/TextInput';
-import Checkbox from '../components/styles/Checkbox';
-import Button from '../components/styles/Button';
-import Message from '../components/styles/Message';
+import Player from './components/Player';
+import PlayerList from './components/PlayerList';
+import SearchLayout from './components/SearchLayout';
+import Form from './components/Form';
+import TextInput from './components/TextInput';
+import Checkbox from './components/Checkbox';
+import Button from './components/Button';
+import Message from './components/Message';
 
 import { GenericObject } from '../types';
 
@@ -91,14 +90,14 @@ export default function Search() {
         </Message>
       )}
       {playerOne && (
-        <PlayerResult
+        <Player
           playerInfo={playerOne}
           column={left}
           initialPosition={playerOne ? -200 : 200}
         />
       )}
       {playerTwo && (
-        <PlayerResult
+        <Player
           playerInfo={playerTwo}
           column={right}
           initialPosition={playerOne ? 200 : -200}

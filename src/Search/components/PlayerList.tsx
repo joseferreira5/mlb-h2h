@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { GenericObject } from '../types';
+import { GenericObject } from '../../types';
 
 const PlayerListLayout = styled(motion.ul)<{ column: string }>`
   grid-column: ${props => props.column};
