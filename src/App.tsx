@@ -8,8 +8,8 @@ import theme from './components/styles/theme';
 
 import Header from './components/Header';
 import Main from './components/styles/Main';
-import PlayerSearch from './pages/PlayerSearch';
-import PlayerComparison from './pages/PlayerComparison';
+import Search from './Search';
+import Comparison from './Comparison';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -21,10 +21,10 @@ export default function App() {
       <Main>
         <AnimatePresence exitBeforeEnter initial={false}>
           <Switch location={location} key={location.pathname}>
-            <Route exact path="/" component={PlayerSearch} />
+            <Route exact path="/" component={Search} />
             <Route
               path="/player-comparison/:playerOneId/:playerTwoId"
-              component={PlayerComparison}
+              component={Comparison}
             />
           </Switch>
         </AnimatePresence>

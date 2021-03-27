@@ -28,7 +28,7 @@ type ParamsType = {
 const left = '1 / 2';
 const right = '3 / 4';
 
-export default function PlayerComparison() {
+export default function Comparison() {
   const { playerOneId, playerTwoId } = useParams<ParamsType>();
   const [playerOneStats, setPlayerOneStats] = useState<GenericObject>(null);
   const [playerTwoStats, setPlayerTwoStats] = useState<GenericObject>(null);

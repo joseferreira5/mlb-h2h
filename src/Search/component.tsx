@@ -20,7 +20,7 @@ const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
 const left = '1 / 2';
 const right = '3 / 4';
 
-export default function PlayerSearch() {
+export default function Search() {
   const [userInput, setUserInput] = useState<string>('');
   const [active, setActive] = useState<string>('Y');
   const [playerOne, setPlayerOne] = useState<GenericObject>(null);
