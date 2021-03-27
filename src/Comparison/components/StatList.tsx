@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GenericObject } from '../types';
+import { GenericObject } from '../../types';
 
 const StatsContainer = styled.div`
   grid-column: 2 / 3;
