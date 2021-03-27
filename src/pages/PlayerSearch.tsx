@@ -14,23 +14,27 @@ import Checkbox from '../components/styles/Checkbox';
 import Button from '../components/styles/Button';
 import Message from '../components/styles/Message';
 
+import { GenericObject } from '../types';
+
+const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
+const left = '1 / 2';
+const right = '3 / 4';
+
 export default function PlayerSearch() {
-  const [userInput, setUserInput] = useState('');
-  const [active, setActive] = useState('Y');
-  const [playerOne, setPlayerOne] = useState(null);
-  const [playerTwo, setPlayerTwo] = useState(null);
-  const [playerList, setPlayerList] = useState(null);
+  const [userInput, setUserInput] = useState<string>('');
+  const [active, setActive] = useState<string>('Y');
+  const [playerOne, setPlayerOne] = useState<GenericObject>(null);
+  const [playerTwo, setPlayerTwo] = useState<GenericObject>(null);
+  const [playerList, setPlayerList] = useState<GenericObject[] | null>(null);
   const themeContext = useContext(ThemeContext);
-  const inputEl = useRef(null);
+  const inputEl = useRef<HTMLInputElement>(null);
 
-  const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
   const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
-  const left = '1 / 2';
-  const right = '3 / 4';
 
-  const handleSearch = async e => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    inputEl.current.blur();
+    
+    inputEl?.current?.blur();
 
     if (userInput.length === 0) return null;
 
@@ -49,11 +53,11 @@ export default function PlayerSearch() {
     }
   };
 
-  const handleCheck = e => {
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked ? setActive('Y') : setActive('N');
   };
 
-  const handleSelect = player => {
+  const handleSelect = (player: GenericObject) => {
     playerOne ? setPlayerTwo(player) : setPlayerOne(player);
     setPlayerList(null);
   };

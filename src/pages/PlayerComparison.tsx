@@ -18,21 +18,28 @@ import getPlayerName from '../utils/getPlayerName';
 import filterStats from '../utils/filterStats';
 import noBattingStats from '../utils/noBattingStats.json';
 import noPitchingStats from '../utils/noPitchingStats.json';
+import { GenericObject } from '../types';
+
+type ParamsType = {
+  playerOneId: string;
+  playerTwoId: string;
+}
+
+const left = '1 / 2';
+const right = '3 / 4';
 
 export default function PlayerComparison() {
-  const { playerOneId, playerTwoId } = useParams();
-  const [playerOneStats, setPlayerOneStats] = useState(null);
-  const [playerTwoStats, setPlayerTwoStats] = useState(null);
-  const [playerOneYears, setPlayerOneYears] = useState(null);
-  const [playerTwoYears, setPlayerTwoYears] = useState(null);
-  const [playerOneName, setPlayerOneName] = useState(null);
-  const [playerTwoName, setPlayerTwoName] = useState(null);
-  const [gameType, setGameType] = useState('R');
-  const [season1, setSeason1] = useState('2019');
-  const [season2, setSeason2] = useState('2019');
-  const [isPitcher, setIsPitcher] = useState(false);
-  const left = '1 / 2';
-  const right = '3 / 4';
+  const { playerOneId, playerTwoId } = useParams<ParamsType>();
+  const [playerOneStats, setPlayerOneStats] = useState<GenericObject>(null);
+  const [playerTwoStats, setPlayerTwoStats] = useState<GenericObject>(null);
+  const [playerOneYears, setPlayerOneYears] = useState<GenericObject[] | null>(null);
+  const [playerTwoYears, setPlayerTwoYears] = useState<GenericObject[] | null>(null);
+  const [playerOneName, setPlayerOneName] = useState<GenericObject>(null);
+  const [playerTwoName, setPlayerTwoName] = useState<GenericObject>(null);
+  const [gameType, setGameType] = useState<string>('R');
+  const [season1, setSeason1] = useState<string>('2019');
+  const [season2, setSeason2] = useState<string>('2019');
+  const [isPitcher, setIsPitcher] = useState<boolean>(false);
 
   useEffect(() => {
     async function setPlayerNames() {
@@ -81,7 +88,7 @@ export default function PlayerComparison() {
     isPitcher ? setPitchingStats() : setBattingStats();
   }, [playerOneId, playerTwoId, gameType, season1, season2, isPitcher]);
 
-  const handleToggle = e => {
+  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.checked ? setIsPitcher(true) : setIsPitcher(false);
   };
 

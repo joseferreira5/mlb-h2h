@@ -1,3 +1,5 @@
+import { GenericObject } from '../types';
+
 const props = [
   'sport_code',
   'sport_id',
@@ -15,11 +17,11 @@ const props = [
   'league'
 ];
 
-export default function filterStats(res) {
-  return Object.keys(res).reduce((object, key) => {
+export default function filterStats(res: any): GenericObject {
+  return Object.keys(res).reduce((obj: Record<string, unknown>, key: string) => {
     if (!props.includes(key)) {
-      object[key] = res[key];
+      obj[key] = res[key];
     }
-    return object;
+    return obj;
   }, {});
 }

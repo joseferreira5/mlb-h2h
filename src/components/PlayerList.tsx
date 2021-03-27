@@ -39,12 +39,19 @@ const ListItem = styled(motion.li)`
   }
 `;
 
+type PlayerListProps = {
+  playerList: Record<string, unknown>[];
+  column: string;
+  initialPosition: number;
+  onSelect: (player: unknown) => void;
+}
+
 export default function PlayerList({
   playerList,
   onSelect,
   column,
   initialPosition
-}) {
+}: PlayerListProps) {
   const players = playerList.map(player => (
     <ListItem key={player.player_id} onClick={() => onSelect(player)}>
       <img

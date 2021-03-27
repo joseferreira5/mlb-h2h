@@ -16,7 +16,7 @@ const StatsContainer = styled.div`
   }
 `;
 
-export default function StatList({ stats }) {
+export default function StatList({ stats }: { stats: string[] }) {
   const statList = Object.keys(stats).map((stat, i) => (
     <p key={i}>{stat.toUpperCase()}</p>
   ));

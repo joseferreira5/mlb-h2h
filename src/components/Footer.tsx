@@ -17,9 +17,9 @@ const StyledFooter = styled.footer`
   }
 `;
 
-export default function Footer(props) {
+export default function Footer() {
   return (
-    <StyledFooter {...props}>
+    <StyledFooter>
       <p>
         Data provided by{' '}
         <a href="https://appac.github.io/mlb-data-api-docs/">MLB Data API</a>

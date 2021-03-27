@@ -55,7 +55,11 @@ const Slider = styled.span`
   }
 `;
 
-export default function ToggleSwitch({ onToggle }) {
+type ToggleSwitchProps = {
+  onToggle: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export default function ToggleSwitch({ onToggle }: ToggleSwitchProps) {
   return (
     <Switch>
       <input type="checkbox" onChange={e => onToggle(e)} />
