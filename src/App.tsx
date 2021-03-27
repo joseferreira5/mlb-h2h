@@ -5,7 +5,6 @@ import { AnimatePresence } from 'framer-motion';
 
 import GlobalStyle from './components/styles/GlobalStyle';
 import theme from './components/styles/theme';
-
 import Header from './components/Header';
 import Main from './components/styles/Main';
 import Search from './Search';

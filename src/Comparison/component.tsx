@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import StatList from '../components/StatList';
-import PlayerStatCard from '../components/PlayerStatCard';
-
-import ComparisonLayout from '../components/styles/ComparisonLayout';
-import ControlLayout from '../components/styles/ControlLayout';
-import PlayerControl from '../components/styles/PlayerControl';
-import ToggleSwitch from '../components/styles/ToggleSwitch';
-import Select from '../components/styles/Select';
-import TeamLogo from '../components/styles/TeamLogo';
+import StatList from './components/StatList';
+import PlayerStatCard from './components/PlayerStatCard';
+import ComparisonLayout from './components/ComparisonLayout';
+import ControlLayout from './components/ControlLayout';
+import PlayerControl from './components/PlayerControl';
+import ToggleSwitch from './components/ToggleSwitch';
+import Select from './components/Select';
+import TeamLogo from './components/TeamLogo';
 
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
