@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ThemeContext } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import { ActionCreator } from 'redux';
 
 import Player from './components/Player';
 import PlayerList from './components/PlayerList';
@@ -13,13 +14,19 @@ import Checkbox from './components/Checkbox';
 import Button from './components/Button';
 import Message from './components/Message';
 
-import { GenericObject } from '../types';
+import { GenericObject, Player as PlayerType } from '../types';
 
 const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
-const left = '1 / 2';
-const right = '3 / 4';
+const leftColumn = '1 / 2';
+const rightColumn = '3 / 4';
 
-export default function Search() {
+export type SearchProps = {
+  left: PlayerType | null;
+  right: PlayerType | null;
+  search: ActionCreator<Promise<void>>;
+};
+
+export default function Search({ left, right, search }: SearchProps) {
   const [userInput, setUserInput] = useState<string>('');
   const [active, setActive] = useState<string>('Y');
   const [playerOne, setPlayerOne] = useState<GenericObject>(null);
@@ -50,6 +57,12 @@ export default function Search() {
         : setPlayerOne(res.data.search_player_all.queryResults.row);
       setUserInput('');
     }
+
+    search(
+      active,
+      userInput,
+      playerOne === null ? 'left' : 'right'
+    );
   };
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,14 +105,14 @@ export default function Search() {
       {playerOne && (
         <Player
           playerInfo={playerOne}
-          column={left}
+          column={leftColumn}
           initialPosition={playerOne ? -200 : 200}
         />
       )}
       {playerTwo && (
         <Player
           playerInfo={playerTwo}
-          column={right}
+          column={rightColumn}
           initialPosition={playerOne ? 200 : -200}
         />
       )}
@@ -107,7 +120,7 @@ export default function Search() {
         <PlayerList
           playerList={playerList}
           onSelect={handleSelect}
-          column={playerOne ? right : left}
+          column={playerOne ? rightColumn : leftColumn}
         />
       )}
       {playerOne && playerTwo && (
