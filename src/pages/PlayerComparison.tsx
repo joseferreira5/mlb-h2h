@@ -32,8 +32,8 @@ export default function PlayerComparison() {
   const { playerOneId, playerTwoId } = useParams<ParamsType>();
   const [playerOneStats, setPlayerOneStats] = useState<GenericObject>(null);
   const [playerTwoStats, setPlayerTwoStats] = useState<GenericObject>(null);
-  const [playerOneYears, setPlayerOneYears] = useState<GenericObject[] | null>(null);
-  const [playerTwoYears, setPlayerTwoYears] = useState<GenericObject[] | null>(null);
+  const [playerOneYears, setPlayerOneYears] = useState<string[] | null>(null);
+  const [playerTwoYears, setPlayerTwoYears] = useState<string[] | null>(null);
   const [playerOneName, setPlayerOneName] = useState<GenericObject>(null);
   const [playerTwoName, setPlayerTwoName] = useState<GenericObject>(null);
   const [gameType, setGameType] = useState<string>('R');
@@ -120,7 +120,7 @@ export default function PlayerComparison() {
           <Select onChange={e => setSeason1(e.target.value)}>
             {playerOneYears &&
               playerOneYears.map(year => (
-                <option key={year} value={year}>
+                <option key={year as string} value={year as string}>
                   {year}
                 </option>
               ))}

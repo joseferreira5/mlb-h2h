@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-const PlayerControl = styled.div`
+const PlayerControl = styled.div<{
+  column: string;
+}>`
   grid-column: ${props => props.column};
   display: flex;
   flex-direction: column;

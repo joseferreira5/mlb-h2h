@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { GenericObject } from '../types';
+
 const StatsContainer = styled.div`
   grid-column: 2 / 3;
   grid-row: 4 / 5;
@@ -16,8 +18,8 @@ const StatsContainer = styled.div`
   }
 `;
 
-export default function StatList({ stats }: { stats: string[] }) {
-  const statList = Object.keys(stats).map((stat, i) => (
+export default function StatList({ stats }: { stats: GenericObject }) {
+  const statList = Object.keys(stats ?? {}).map((stat, i) => (
     <p key={i}>{stat.toUpperCase()}</p>
   ));
 

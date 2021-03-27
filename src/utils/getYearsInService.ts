@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default async function getYearsInService(playerId) {
+export default async function getYearsInService(playerId: string) {
   const res = await axios.get(
     `https://lookup-service-prod.mlb.com/json/named.player_info.bam?sport_code='mlb'&player_id='${playerId}'&player_info.col_in=pro_debut_date`
   );

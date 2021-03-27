@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const StatCardLayout = styled(motion.div)`
+import { GenericObject } from '../types';
+
+const StatCardLayout = styled(motion.div)<{
+  column: string;
+}>`
   grid-column: ${props => props.column};
   grid-row: 4 / 5;
   justify-self: center;
@@ -23,13 +27,19 @@ const StatsList = styled.div`
   }
 `;
 
+type PlayerStatCardProps = {
+  playerStats: GenericObject;
+  column: string;
+  initialPosition: number;
+};
+
 export default function PlayerStatCard({
   playerStats,
   column,
   initialPosition
-}) {
-  const statsList = Object.values(playerStats).map((stat, i) => (
-    <p key={i}>{stat}</p>
+}: PlayerStatCardProps) {
+  const statsList = Object.values(playerStats ?? {}).map((stat, i) => (
+    <p key={i}>{stat as string}</p>
   ));
 
   return (

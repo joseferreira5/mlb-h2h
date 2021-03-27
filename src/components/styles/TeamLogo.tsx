@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-const TeamLogo = styled.img`
+const TeamLogo = styled.img<{
+  column: string;
+}>`
   object-fit: contain;
   max-width: 100%;
   max-height: 100%;

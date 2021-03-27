@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const PlayerListLayout = styled(motion.ul)`
+import { GenericObject } from '../types';
+
+const PlayerListLayout = styled(motion.ul)<{ column: string }>`
   grid-column: ${props => props.column};
   grid-row: 2 / 4;
   background-color: ${props => props.theme.darkShade};
@@ -40,32 +42,30 @@ const ListItem = styled(motion.li)`
 `;
 
 type PlayerListProps = {
-  playerList: Record<string, unknown>[];
+  playerList: GenericObject[];
   column: string;
-  initialPosition: number;
-  onSelect: (player: unknown) => void;
+  onSelect: (player: GenericObject) => void;
 }
 
 export default function PlayerList({
   playerList,
-  onSelect,
   column,
-  initialPosition
+  onSelect,
 }: PlayerListProps) {
   const players = playerList.map(player => (
-    <ListItem key={player.player_id} onClick={() => onSelect(player)}>
+    <ListItem key={player?.player_id as string} onClick={() => onSelect(player)}>
       <img
-        src={`https://securea.mlb.com/mlb/images/players/head_shot/${player.player_id}.jpg`}
-        alt={player.name_display_first_last}
+        src={`https://securea.mlb.com/mlb/images/players/head_shot/${player?.player_id}.jpg`}
+        alt={player?.name_display_first_last as string}
       />
-      <h2>{player.name_display_first_last}</h2>
+      <h2>{player?.name_display_first_last as string}</h2>
     </ListItem>
   ));
   return (
     <AnimatePresence>
       <PlayerListLayout
         column={column}
-        initial={{ x: initialPosition, opacity: 0 }}
+        initial={{ x: 0, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
