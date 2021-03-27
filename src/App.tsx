@@ -3,16 +3,17 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 
-import GlobalStyle from './components/styles/GlobalStyle';
-import theme from './components/styles/theme';
-import Header from './components/Header';
-import Main from './components/styles/Main';
+import Header from './Header';
+import Main from './Main';
 import Search from './Search';
 import Comparison from './Comparison';
-import Footer from './components/Footer';
+import Footer from './Footer';
+import GlobalStyle from './styles/GlobalStyle';
+import theme from './styles/theme';
 
 export default function App() {
   const location = useLocation();
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
