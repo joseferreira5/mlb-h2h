@@ -14,9 +14,6 @@ import Message from './components/Message';
 import { search } from './slice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 
-const leftColumn = '1 / 2';
-const rightColumn = '3 / 4';
-
 export function Search() {
   const { left, right } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
@@ -26,8 +23,6 @@ export function Search() {
   // const [playerList, setPlayerList] = useState<GenericObject[] | null>(null);
   const themeContext = useContext(ThemeContext);
   const inputEl = useRef<HTMLInputElement>(null);
-
-  console.log('left', left, 'right', right);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,16 +79,16 @@ export function Search() {
 
       {left && (
         <Player
-          playerInfo={left}
-          column={leftColumn}
+          player={left}
+          which="left"
           initialPosition={left ? -200 : 200}
         />
       )}
 
       {right && (
         <Player
-          playerInfo={right}
-          column={rightColumn}
+          player={right}
+          which="right"
           initialPosition={right ? 200 : -200}
         />
       )}

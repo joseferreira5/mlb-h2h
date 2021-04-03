@@ -140,7 +140,7 @@ type HittingStats = {
 
 export type Player = {
   id: string;
-  name?: string;
+  name: string;
   jerseyNumber?: string;
   position?: string;
   bats?: string;

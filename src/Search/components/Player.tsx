@@ -1,7 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
-import axios from 'axios';
+
+import { WhichPlayer } from '../slice';
+import { Player } from '../../types';
+
+type PlayerResultProps = {
+  player: Player;
+  which: WhichPlayer;
+  initialPosition: number;
+}
+
+const PlayerResult = ({
+  player,
+  which,
+  initialPosition,
+}: PlayerResultProps) => (
+  <AnimatePresence>
+    <ResultLayout
+      column={columns[which]}
+      initial={{ x: initialPosition, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      {player.name && (
+        <>
+          <h2>
+            {player.name} #
+            {player.jerseyNumber}
+          </h2>
+          <img
+            src={`https://securea.mlb.com/mlb/images/players/head_shot/${player.id}.jpg`}
+            alt={player.name}
+          />
+          <p>Position: {player.position}</p>
+          <p>
+            <span>Bats: {player.bats}</span>
+            {' | '}
+            <span>Throws: {player.throws}</span>
+          </p>
+          <p>
+            <span>Age: {player.age}</span>
+            {' | '}
+            <span>
+              Height: {player.height}
+            </span>
+          </p>
+        </>
+      )}
+    </ResultLayout>
+  </AnimatePresence>
+);
+
+export default PlayerResult;
+
+const columns: Record<WhichPlayer, string> = {
+  left: '1 / 2',
+  right: '3 / 4',
+};
 
 const ResultLayout = styled(motion.div)<{
   column: string;
@@ -37,64 +93,3 @@ const ResultLayout = styled(motion.div)<{
     font-weight: 700;
   }
 `;
-
-type PlayerResultProps = {
-  playerInfo: Record<string, unknown>;
-  column: string;
-  initialPosition: number;
-}
-
-export default function PlayerResult({
-  playerInfo,
-  column,
-  initialPosition,
-}: PlayerResultProps) {
-  const [playerDetail, setPlayerDetail] = useState<Record<string, unknown>>();
-  const baseUrl = 'https://lookup-service-prod.mlb.com';
-  const playerDeets = `/json/named.player_info.bam?sport_code='mlb'&player_id='${playerInfo.player_id}'`;
-
-  useEffect(() => {
-    async function getDetails() {
-      const res = await axios.get(`${baseUrl}${playerDeets}`);
-      setPlayerDetail(res.data.player_info.queryResults.row);
-    }
-    getDetails();
-  }, [playerDeets]);
-
-  return (
-    <AnimatePresence>
-      <ResultLayout
-        column={column}
-        initial={{ x: initialPosition, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        {playerDetail && (
-          <>
-            <h2>
-              {playerDetail?.name_display_first_last_html} #
-              {playerDetail?.jersey_number}
-            </h2>
-            <img
-              src={`https://securea.mlb.com/mlb/images/players/head_shot/${playerInfo.player_id}.jpg`}
-              alt={playerInfo.name_display_last_first as string}
-            />
-            <p>Position: {playerDetail.primary_position_txt}</p>
-            <p>
-              <span>Bats: {playerDetail.bats}</span>
-              {' | '}
-              <span>Throws: {playerDetail.throws}</span>
-            </p>
-            <p>
-              <span>Age: {playerDetail.age}</span>
-              {' | '}
-              <span>
-                Height: {playerDetail.height_feet}'{playerDetail.height_inches}"
-              </span>
-            </p>
-          </>
-        )}
-      </ResultLayout>
-    </AnimatePresence>
-  );
-}
