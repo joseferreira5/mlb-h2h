@@ -2,10 +2,9 @@ import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
-import axios from 'axios';
 
 import Player from './components/Player';
-import PlayerList from './components/PlayerList';
+// import PlayerList from './components/PlayerList';
 import SearchLayout from './components/SearchLayout';
 import Form from './components/Form';
 import TextInput from './components/TextInput';
@@ -15,9 +14,6 @@ import Message from './components/Message';
 import { search } from './slice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 
-import { GenericObject } from '../types';
-
-const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
 const leftColumn = '1 / 2';
 const rightColumn = '3 / 4';
 
@@ -27,13 +23,9 @@ export function Search() {
 
   const [userInput, setUserInput] = useState<string>('');
   const [active, setActive] = useState<string>('Y');
-  const [playerOne, setPlayerOne] = useState<GenericObject>(null);
-  const [playerTwo, setPlayerTwo] = useState<GenericObject>(null);
-  const [playerList, setPlayerList] = useState<GenericObject[] | null>(null);
+  // const [playerList, setPlayerList] = useState<GenericObject[] | null>(null);
   const themeContext = useContext(ThemeContext);
   const inputEl = useRef<HTMLInputElement>(null);
-
-  const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
 
   console.log('left', left, 'right', right);
 
@@ -44,24 +36,10 @@ export function Search() {
 
     if (userInput.length === 0) return null;
 
-    const res = await axios.get(`${baseUrl}${searchPlayer}`);
-
-    if (res.data.search_player_all.queryResults.totalSize > 1) {
-      playerOne ? setPlayerTwo(null) : setPlayerOne(null);
-      setPlayerList(res.data.search_player_all.queryResults.row);
-      setUserInput('');
-    } else {
-      setPlayerList(null);
-      playerOne
-        ? setPlayerTwo(res.data.search_player_all.queryResults.row)
-        : setPlayerOne(res.data.search_player_all.queryResults.row);
-      setUserInput('');
-    }
-
     dispatch(search(
       active,
       userInput,
-      playerOne === null ? 'left' : 'right'
+      left === null ? 'left' : 'right'
     ));
   };
 
@@ -69,10 +47,10 @@ export function Search() {
     e.target.checked ? setActive('Y') : setActive('N');
   };
 
-  const handleSelect = (player: GenericObject) => {
-    playerOne ? setPlayerTwo(player) : setPlayerOne(player);
-    setPlayerList(null);
-  };
+  // const handleSelect = (player: GenericObject) => {
+  //   playerOne ? setPlayerTwo(player) : setPlayerOne(player);
+  //   setPlayerList(null);
+  // };
 
   return (
     <SearchLayout
@@ -97,41 +75,41 @@ export function Search() {
         </Button>
       </Form>
 
-      {playerOne === null && playerList === null && (
+      {left === null && (
         <Message>
           Welcome to MLB Head to Head! An easier way to look up and compare
           player stats. Enter a players last name to get started!
         </Message>
       )}
 
-      {playerOne && (
+      {left && (
         <Player
-          playerInfo={playerOne}
+          playerInfo={left}
           column={leftColumn}
-          initialPosition={playerOne ? -200 : 200}
+          initialPosition={left ? -200 : 200}
         />
       )}
 
-      {playerTwo && (
+      {right && (
         <Player
-          playerInfo={playerTwo}
+          playerInfo={right}
           column={rightColumn}
-          initialPosition={playerOne ? 200 : -200}
+          initialPosition={right ? 200 : -200}
         />
       )}
 
-      {playerList && (
+      {/**playerList && (
         <PlayerList
           playerList={playerList}
           onSelect={handleSelect}
           column={playerOne ? rightColumn : leftColumn}
         />
-      )}
+      )*/}
 
-      {playerOne && playerTwo && (
+      {left && right && (
         <Link
           className="compare-btn"
-          to={`/player-comparison/${playerOne.player_id}/${playerTwo.player_id}`}
+          to={`/player-comparison/${left.id}/${right.id}`}
         >
           <AnimatePresence>
             <Button

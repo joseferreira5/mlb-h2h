@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ActionCreator } from 'redux';
 
 import { Player } from '../types';
+import { mapBasicInfo } from '../utils';
 
 export interface SearchState {
   left: Player | null
@@ -42,12 +43,6 @@ export const { playerLoaded } = searchSlice.actions;
 
 export default searchSlice.reducer;
 
-const mapPlayer = (data: Record<string, string>): Player => ({
-  id: data.player_id,
-  firstName: data.name_first,
-  lastName: data.name_last,
-});
-
 export function search(
   active: string,
   query: string,
@@ -71,7 +66,7 @@ export function search(
     }
 
     dispatch(playerLoaded({
-      player: mapPlayer(player),
+      player: mapBasicInfo(player),
       which,
     }));
   };
