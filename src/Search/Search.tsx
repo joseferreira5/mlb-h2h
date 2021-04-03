@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ThemeContext } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import { ActionCreator } from 'redux';
 
 import Player from './components/Player';
 import PlayerList from './components/PlayerList';
@@ -13,20 +12,19 @@ import TextInput from './components/TextInput';
 import Checkbox from './components/Checkbox';
 import Button from './components/Button';
 import Message from './components/Message';
+import { search } from './slice';
+import { useAppSelector, useAppDispatch } from '../hooks';
 
-import { GenericObject, Player as PlayerType } from '../types';
+import { GenericObject } from '../types';
 
 const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
 const leftColumn = '1 / 2';
 const rightColumn = '3 / 4';
 
-export type SearchProps = {
-  left: PlayerType | null;
-  right: PlayerType | null;
-  search: ActionCreator<Promise<void>>;
-};
+export function Search() {
+  const { left, right } = useAppSelector((state) => state.search);
+  const dispatch = useAppDispatch();
 
-export default function Search({ left, right, search }: SearchProps) {
   const [userInput, setUserInput] = useState<string>('');
   const [active, setActive] = useState<string>('Y');
   const [playerOne, setPlayerOne] = useState<GenericObject>(null);
@@ -36,6 +34,8 @@ export default function Search({ left, right, search }: SearchProps) {
   const inputEl = useRef<HTMLInputElement>(null);
 
   const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
+
+  console.log('left', left, 'right', right);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,11 +58,11 @@ export default function Search({ left, right, search }: SearchProps) {
       setUserInput('');
     }
 
-    search(
+    dispatch(search(
       active,
       userInput,
       playerOne === null ? 'left' : 'right'
-    );
+    ));
   };
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,12 +96,14 @@ export default function Search({ left, right, search }: SearchProps) {
           Search
         </Button>
       </Form>
+
       {playerOne === null && playerList === null && (
         <Message>
           Welcome to MLB Head to Head! An easier way to look up and compare
           player stats. Enter a players last name to get started!
         </Message>
       )}
+
       {playerOne && (
         <Player
           playerInfo={playerOne}
@@ -109,6 +111,7 @@ export default function Search({ left, right, search }: SearchProps) {
           initialPosition={playerOne ? -200 : 200}
         />
       )}
+
       {playerTwo && (
         <Player
           playerInfo={playerTwo}
@@ -116,6 +119,7 @@ export default function Search({ left, right, search }: SearchProps) {
           initialPosition={playerOne ? 200 : -200}
         />
       )}
+
       {playerList && (
         <PlayerList
           playerList={playerList}
@@ -123,6 +127,7 @@ export default function Search({ left, right, search }: SearchProps) {
           column={playerOne ? rightColumn : leftColumn}
         />
       )}
+
       {playerOne && playerTwo && (
         <Link
           className="compare-btn"

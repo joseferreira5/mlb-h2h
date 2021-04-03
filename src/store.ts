@@ -1,13 +1,17 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-import search, { SearchState } from './Search/reducer';
+import search from './Search/slice';
 
-export interface RootState {
-  search: SearchState
-}
-
-const store = combineReducers({
+const reducer = combineReducers({
   search,
 });
+
+const store = configureStore({
+  reducer,
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

@@ -2,20 +2,16 @@ import React from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import { Provider as StoreProvider } from 'react-redux';
 
 import Header from './Header';
 import Main from './Main';
-import Search from './Search';
+import { Search } from './Search';
 import Comparison from './Comparison';
 import Footer from './Footer';
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
-import rootReducer from './store';
-
-const store = createStore(rootReducer, applyMiddleware(thunk));
+import store from './store';
 
 export default function App() {
   const location = useLocation();
