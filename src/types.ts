@@ -148,7 +148,7 @@ export type Player = {
   age?: number;
   height?: string;
   primaryStat?: string;
-  proDebutDate?: Date;
+  proDebutDate?: string;
   pitching?: Record<string, PitchingStats>;
   hitting?: Record<string, HittingStats>;
 };

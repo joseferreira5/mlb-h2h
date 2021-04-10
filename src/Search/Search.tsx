@@ -15,7 +15,10 @@ import { search } from './slice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 
 export function Search() {
-  const { left, right } = useAppSelector((state) => state.search);
+  const { left, right } = useAppSelector((state) => ({
+    left: state.players.cached[state.search.left],
+    right: state.players.cached[state.search.right],
+  }));
   const dispatch = useAppDispatch();
 
   const [userInput, setUserInput] = useState<string>('');
@@ -34,7 +37,7 @@ export function Search() {
     dispatch(search(
       active,
       userInput,
-      left === null ? 'left' : 'right'
+      left === undefined ? 'left' : 'right'
     ));
   };
 
@@ -70,7 +73,7 @@ export function Search() {
         </Button>
       </Form>
 
-      {left === null && (
+      {left === undefined && (
         <Message>
           Welcome to MLB Head to Head! An easier way to look up and compare
           player stats. Enter a players last name to get started!

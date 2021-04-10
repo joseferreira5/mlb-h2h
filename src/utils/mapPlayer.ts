@@ -2,7 +2,7 @@ import { Player } from '../types';
 
 export const mapBasicInfo = (data: Record<string, string>): Partial<Player> => ({
   id: data.player_id,
-  proDebutDate: new Date(data.pro_debut_date),
+  proDebutDate: data.pro_debut_date,
   bats: data.bats,
   throws: data.throws,
   position: data.position,

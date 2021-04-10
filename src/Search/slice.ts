@@ -2,44 +2,41 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ActionCreator } from 'redux';
 
 import { Player } from '../types';
-import { mapBasicInfo, mapDetails } from '../utils';
+import { mapBasicInfo } from '../utils';
+import { playerLoaded, getDetails } from '../playersSlice';
 
 export interface SearchState {
-  left: Player | null
-  right: Player | null
+  left: string;
+  right: string;
 };
 
 export type WhichPlayer = 'left' | 'right';
 export type SearchPayload = {
-  player: Partial<Player>;
+  id: string;
   which: WhichPlayer;
 };
 
 const initialState: SearchState = {
-  left: null,
-  right: null,
+  left: '',
+  right: '',
 };
 
 export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    playerLoaded(state, action: PayloadAction<SearchPayload>) {
+    playerSearched(state, action: PayloadAction<SearchPayload>) {
       const { payload } = action;
-      const player = state[payload.which];
 
       return {
         ...state,
-        [payload.which]: {
-          ...player,
-          ...payload.player,
-        },
+        [payload.which]: payload.id,
       };
     },
   },
 });
 
-export const { playerLoaded } = searchSlice.actions;
+export const { playerSearched } = searchSlice.actions;
 
 export default searchSlice.reducer;
 
@@ -66,29 +63,19 @@ export function search(
       player = results;
     }
 
+    // cache basic info
     dispatch(playerLoaded({
-      player: mapBasicInfo(player),
-      which,
+      id: player.player_id,
+      player: mapBasicInfo(player) as Player,
     }));
 
-    dispatch(getDetails(player.player_id, which));
+    // pull and cache more info
+    dispatch(getDetails(player.player_id));
+
+    // selects the player for the card
+    dispatch(playerSearched({
+      id: player.player_id,
+      which,
+    }));
   };
 };
-
-export function getDetails(
-  id: string,
-  which: WhichPlayer
-): ActionCreator<Promise<void>> {
-  return async (dispatch) => {
-    const playerDeets =
-      `${baseUrl}.player_info.bam?sport_code='mlb'&player_id='${id}'`;
-
-    const res = await fetch(playerDeets);
-    const data = await res.json();
-
-    dispatch(playerLoaded({
-      player: mapDetails(data.player_info.queryResults.row),
-      which,
-    }));
-  };
-}
