@@ -2,6 +2,9 @@
   "name": "mlb-h2h",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -38,7 +41,6 @@
     ]
   },
   "devDependencies": {
-    "@storybook/react": "^5.3.18",
-    "netlify-cli": "^16.9.3"
+    "@storybook/react": "^5.3.18"
   }
 }
