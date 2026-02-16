@@ -18,6 +18,7 @@ import getPitchingStats from '../utils/getPitchingStats';
 import getPlayerName from '../utils/getPlayerName';
 import noBattingStats from '../utils/noBattingStats.json';
 import noPitchingStats from '../utils/noPitchingStats.json';
+import { battingStatConfig, pitchingStatConfig } from '../utils/statConfig';
 
 const currentSeason = String(new Date().getUTCFullYear());
 
@@ -34,8 +35,10 @@ export default function PlayerComparison() {
   const [season2, setSeason2] = useState(currentSeason);
   const [isPitcher, setIsPitcher] = useState(false);
   const [error, setError] = useState('');
+  const [loadingStats, setLoadingStats] = useState(false);
   const left = '1 / 2';
   const right = '3 / 4';
+  const statConfig = isPitcher ? pitchingStatConfig : battingStatConfig;
 
   useEffect(() => {
     let isMounted = true;
@@ -88,6 +91,7 @@ export default function PlayerComparison() {
 
     async function loadStats() {
       try {
+        setLoadingStats(true);
         setError('');
 
         const statsFetcher = isPitcher ? getPitchingStats : getBattingStats;
@@ -105,6 +109,10 @@ export default function PlayerComparison() {
           setPlayerOneStats(isPitcher ? noPitchingStats : noBattingStats);
           setPlayerTwoStats(isPitcher ? noPitchingStats : noBattingStats);
           setError('Unable to load stats right now.');
+        }
+      } finally {
+        if (isMounted) {
+          setLoadingStats(false);
         }
       }
     }
@@ -143,6 +151,7 @@ export default function PlayerComparison() {
         </label>
       </ControlLayout>
       {error && <Message>{error}</Message>}
+      {loadingStats && !error && <Message>Loading stats...</Message>}
       {playerOneName && (
         <PlayerControl column={left}>
           <h2>{playerOneName}</h2>
@@ -182,10 +191,14 @@ export default function PlayerComparison() {
           />
           <PlayerStatCard
             playerStats={playerOneStats}
+            statKeys={statConfig.keys}
             column={left}
             initialPosition={200}
           />
-          <StatList stats={isPitcher ? noPitchingStats : noBattingStats} />
+          <StatList
+            statKeys={statConfig.keys}
+            statLabels={statConfig.labels}
+          />
           <TeamLogo
             column={right}
             src={
@@ -197,6 +210,7 @@ export default function PlayerComparison() {
           />
           <PlayerStatCard
             playerStats={playerTwoStats}
+            statKeys={statConfig.keys}
             column={right}
             initialPosition={-200}
           />

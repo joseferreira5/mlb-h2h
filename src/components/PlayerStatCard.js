@@ -25,11 +25,12 @@ const StatsList = styled.div`
 
 export default function PlayerStatCard({
   playerStats,
+  statKeys,
   column,
   initialPosition
 }) {
-  const statsList = Object.values(playerStats).map((stat, i) => (
-    <p key={i}>{stat}</p>
+  const statsList = statKeys.map(statKey => (
+    <p key={statKey}>{playerStats[statKey] || '-'}</p>
   ));
 
   return (

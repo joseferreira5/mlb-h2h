@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = process.env.REACT_APP_API_BASE || '/.netlify/functions/mlb';
+const baseUrl = import.meta.env.VITE_API_BASE || '/.netlify/functions/mlb';
 
 export async function searchPlayers(name, active = 'Y') {
   const res = await axios.get(baseUrl, {

@@ -13,12 +13,13 @@ const StatsContainer = styled.div`
   p {
     margin-bottom: 1em;
     font-weight: 700;
+    text-align: center;
   }
 `;
 
-export default function StatList({ stats }) {
-  const statList = Object.keys(stats).map((stat, i) => (
-    <p key={i}>{stat.toUpperCase()}</p>
+export default function StatList({ statKeys, statLabels }) {
+  const statList = statKeys.map(statKey => (
+    <p key={statKey}>{(statLabels[statKey] || statKey).toUpperCase()}</p>
   ));
 
   return <StatsContainer>{statList}</StatsContainer>;

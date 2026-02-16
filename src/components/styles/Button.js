@@ -11,6 +11,11 @@ const Button = styled(motion.button)`
   width: 8em;
   border: none;
   border-radius: 0.5em;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 `;
 
 export default Button;

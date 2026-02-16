@@ -94,7 +94,11 @@ export default function PlayerSearch() {
           <Checkbox onChange={handleCheck} defaultChecked />
           Active Player
         </label>
-        <Button type="submit" backgroundColor={themeContext.mainBrand}>
+        <Button
+          type="submit"
+          backgroundColor={themeContext.mainBrand}
+          disabled={loading}
+        >
           {loading ? 'Searching...' : 'Search'}
         </Button>
       </Form>
