@@ -95,6 +95,12 @@ mlb-h2h
 | :------: | :-----------: | :----------------------------------------- | :-------------------------------------------------------------------- |
 | MLB Data |      yes      | https://appac.github.io/mlb-data-api-docs/ | _http://lookup-service-prod.mlb.com/json/named.search_player_all.bam_ |
 
+#### Runtime Notes (2026 refresh)
+
+- The app now uses a Netlify Function proxy at `/.netlify/functions/mlb`.
+- The proxy fetches MLB data from the modern Stats API (`https://statsapi.mlb.com/api/v1`) and normalizes responses for the UI.
+- For local development, run through Netlify (`netlify dev`) so the function route is available, or set `REACT_APP_API_BASE` to a reachable function URL.
+
 <br>
 
 #### MVP

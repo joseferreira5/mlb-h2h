@@ -10,14 +10,16 @@ import PlayerControl from '../components/styles/PlayerControl';
 import ToggleSwitch from '../components/styles/ToggleSwitch';
 import Select from '../components/styles/Select';
 import TeamLogo from '../components/styles/TeamLogo';
+import Message from '../components/styles/Message';
 
 import getYearsInService from '../utils/getYearsInService';
 import getBattingStats from '../utils/getBattingStats';
 import getPitchingStats from '../utils/getPitchingStats';
 import getPlayerName from '../utils/getPlayerName';
-import filterStats from '../utils/filterStats';
 import noBattingStats from '../utils/noBattingStats.json';
 import noPitchingStats from '../utils/noPitchingStats.json';
+
+const currentSeason = String(new Date().getUTCFullYear());
 
 export default function PlayerComparison() {
   const { playerOneId, playerTwoId } = useParams();
@@ -28,57 +30,90 @@ export default function PlayerComparison() {
   const [playerOneName, setPlayerOneName] = useState(null);
   const [playerTwoName, setPlayerTwoName] = useState(null);
   const [gameType, setGameType] = useState('R');
-  const [season1, setSeason1] = useState('2019');
-  const [season2, setSeason2] = useState('2019');
+  const [season1, setSeason1] = useState(currentSeason);
+  const [season2, setSeason2] = useState(currentSeason);
   const [isPitcher, setIsPitcher] = useState(false);
+  const [error, setError] = useState('');
   const left = '1 / 2';
   const right = '3 / 4';
 
   useEffect(() => {
-    async function setPlayerNames() {
-      const playerName1 = await getPlayerName(playerOneId);
-      const playerName2 = await getPlayerName(playerTwoId);
+    let isMounted = true;
 
-      setPlayerOneName(playerName1);
-      setPlayerTwoName(playerName2);
+    async function loadIdentityData() {
+      try {
+        setError('');
+
+        const [name1, name2, years1, years2] = await Promise.all([
+          getPlayerName(playerOneId),
+          getPlayerName(playerTwoId),
+          getYearsInService(playerOneId),
+          getYearsInService(playerTwoId)
+        ]);
+
+        if (!isMounted) return;
+
+        setPlayerOneName(name1);
+        setPlayerTwoName(name2);
+        setPlayerOneYears(years1);
+        setPlayerTwoYears(years2);
+      } catch (apiError) {
+        if (isMounted) {
+          setError('Unable to load player info right now.');
+        }
+      }
     }
 
-    async function setYearsInService() {
-      const yearsInService1 = await getYearsInService(playerOneId);
-      const yearsInService2 = await getYearsInService(playerTwoId);
+    loadIdentityData();
 
-      setPlayerOneYears(yearsInService1);
-      setPlayerTwoYears(yearsInService2);
+    return () => {
+      isMounted = false;
+    };
+  }, [playerOneId, playerTwoId]);
+
+  useEffect(() => {
+    if (playerOneYears && playerOneYears.length && !playerOneYears.includes(season1)) {
+      setSeason1(playerOneYears[0]);
+    }
+  }, [playerOneYears, season1]);
+
+  useEffect(() => {
+    if (playerTwoYears && playerTwoYears.length && !playerTwoYears.includes(season2)) {
+      setSeason2(playerTwoYears[0]);
+    }
+  }, [playerTwoYears, season2]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadStats() {
+      try {
+        setError('');
+
+        const statsFetcher = isPitcher ? getPitchingStats : getBattingStats;
+        const [stats1, stats2] = await Promise.all([
+          statsFetcher(playerOneId, gameType, season1),
+          statsFetcher(playerTwoId, gameType, season2)
+        ]);
+
+        if (!isMounted) return;
+
+        setPlayerOneStats(stats1 || (isPitcher ? noPitchingStats : noBattingStats));
+        setPlayerTwoStats(stats2 || (isPitcher ? noPitchingStats : noBattingStats));
+      } catch (apiError) {
+        if (isMounted) {
+          setPlayerOneStats(isPitcher ? noPitchingStats : noBattingStats);
+          setPlayerTwoStats(isPitcher ? noPitchingStats : noBattingStats);
+          setError('Unable to load stats right now.');
+        }
+      }
     }
 
-    async function setBattingStats() {
-      const stats1 = await getBattingStats(playerOneId, gameType, season1);
-      const stats2 = await getBattingStats(playerTwoId, gameType, season2);
+    loadStats();
 
-      stats1
-        ? setPlayerOneStats(filterStats(stats1))
-        : setPlayerOneStats(filterStats(noBattingStats));
-
-      stats2
-        ? setPlayerTwoStats(filterStats(stats2))
-        : setPlayerTwoStats(filterStats(noBattingStats));
-    }
-
-    async function setPitchingStats() {
-      const stats1 = await getPitchingStats(playerOneId, gameType, season1);
-      const stats2 = await getPitchingStats(playerTwoId, gameType, season2);
-
-      stats1
-        ? setPlayerOneStats(filterStats(stats1))
-        : setPlayerOneStats(filterStats(noPitchingStats));
-
-      stats2
-        ? setPlayerTwoStats(filterStats(stats2))
-        : setPlayerTwoStats(filterStats(noPitchingStats));
-    }
-    setPlayerNames();
-    setYearsInService();
-    isPitcher ? setPitchingStats() : setBattingStats();
+    return () => {
+      isMounted = false;
+    };
   }, [playerOneId, playerTwoId, gameType, season1, season2, isPitcher]);
 
   const handleToggle = e => {
@@ -107,10 +142,11 @@ export default function PlayerComparison() {
           <ToggleSwitch onToggle={handleToggle} />
         </label>
       </ControlLayout>
+      {error && <Message>{error}</Message>}
       {playerOneName && (
         <PlayerControl column={left}>
           <h2>{playerOneName}</h2>
-          <Select onChange={e => setSeason1(e.target.value)}>
+          <Select value={season1} onChange={e => setSeason1(e.target.value)}>
             {playerOneYears &&
               playerOneYears.map(year => (
                 <option key={year} value={year}>
@@ -123,7 +159,7 @@ export default function PlayerComparison() {
       {playerTwoName && (
         <PlayerControl column={right}>
           <h2>{playerTwoName}</h2>
-          <Select onChange={e => setSeason2(e.target.value)}>
+          <Select value={season2} onChange={e => setSeason2(e.target.value)}>
             {playerTwoYears &&
               playerTwoYears.map(year => (
                 <option key={year} value={year}>
@@ -149,13 +185,7 @@ export default function PlayerComparison() {
             column={left}
             initialPosition={200}
           />
-          <StatList
-            stats={
-              isPitcher
-                ? filterStats(noPitchingStats)
-                : filterStats(noBattingStats)
-            }
-          />
+          <StatList stats={isPitcher ? noPitchingStats : noBattingStats} />
           <TeamLogo
             column={right}
             src={

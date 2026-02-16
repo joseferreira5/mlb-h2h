@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
-import axios from 'axios';
+
+import { getPlayer } from '../utils/mlbApi';
 
 const ResultLayout = styled(motion.div)`
   grid-column: ${props => props.column};
@@ -38,16 +39,29 @@ const ResultLayout = styled(motion.div)`
 
 export default function PlayerResult(props) {
   const [playerDetail, setPlayerDetail] = useState();
-  const baseUrl = 'https://lookup-service-prod.mlb.com';
-  const playerDeets = `/json/named.player_info.bam?sport_code='mlb'&player_id='${props.playerInfo.player_id}'`;
 
   useEffect(() => {
+    let isMounted = true;
+
     async function getDetails() {
-      const res = await axios.get(`${baseUrl}${playerDeets}`);
-      setPlayerDetail(res.data.player_info.queryResults.row);
+      try {
+        const player = await getPlayer(props.playerInfo.player_id);
+        if (isMounted) {
+          setPlayerDetail(player);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setPlayerDetail(null);
+        }
+      }
     }
+
     getDetails();
-  }, [playerDeets]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [props.playerInfo.player_id]);
 
   return (
     <AnimatePresence>
@@ -60,8 +74,7 @@ export default function PlayerResult(props) {
         {playerDetail && (
           <>
             <h2>
-              {playerDetail.name_display_first_last_html} #
-              {playerDetail.jersey_number}
+              {playerDetail.name_display_first_last_html} #{playerDetail.jersey_number}
             </h2>
             <img
               src={`https://securea.mlb.com/mlb/images/players/head_shot/${props.playerInfo.player_id}.jpg`}

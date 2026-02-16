@@ -2,8 +2,8 @@ import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
-import axios from 'axios';
 
+import { searchPlayers } from '../utils/mlbApi';
 import PlayerResult from '../components/PlayerResult';
 import PlayerList from '../components/PlayerList';
 
@@ -20,32 +20,49 @@ export default function PlayerSearch() {
   const [playerOne, setPlayerOne] = useState(null);
   const [playerTwo, setPlayerTwo] = useState(null);
   const [playerList, setPlayerList] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const themeContext = useContext(ThemeContext);
   const inputEl = useRef(null);
 
-  const baseUrl = 'https://lookup-service-prod.mlb.com/json/named';
-  const searchPlayer = `.search_player_all.bam?sport_code='mlb'&active_sw='${active}'&name_part='${userInput}%25'`;
   const left = '1 / 2';
   const right = '3 / 4';
 
   const handleSearch = async e => {
     e.preventDefault();
-    inputEl.current.blur();
+    if (inputEl.current) {
+      inputEl.current.blur();
+    }
 
-    if (userInput.length === 0) return null;
+    const trimmedInput = userInput.trim();
+    if (!trimmedInput.length) return;
 
-    const res = await axios.get(`${baseUrl}${searchPlayer}`);
+    try {
+      setLoading(true);
+      setError('');
 
-    if (res.data.search_player_all.queryResults.totalSize > 1) {
-      playerOne ? setPlayerTwo(null) : setPlayerOne(null);
-      setPlayerList(res.data.search_player_all.queryResults.row);
+      const players = await searchPlayers(trimmedInput, active);
+
+      if (!players.length) {
+        setPlayerList(null);
+        setError('No players found for that search.');
+        return;
+      }
+
+      if (players.length > 1) {
+        playerOne ? setPlayerTwo(null) : setPlayerOne(null);
+        setPlayerList(players);
+      } else {
+        setPlayerList(null);
+        playerOne ? setPlayerTwo(players[0]) : setPlayerOne(players[0]);
+      }
+
       setUserInput('');
-    } else {
+    } catch (apiError) {
       setPlayerList(null);
-      playerOne
-        ? setPlayerTwo(res.data.search_player_all.queryResults.row)
-        : setPlayerOne(res.data.search_player_all.queryResults.row);
-      setUserInput('');
+      setError('Unable to search players right now. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,6 +73,7 @@ export default function PlayerSearch() {
   const handleSelect = player => {
     playerOne ? setPlayerTwo(player) : setPlayerOne(player);
     setPlayerList(null);
+    setError('');
   };
 
   return (
@@ -77,10 +95,11 @@ export default function PlayerSearch() {
           Active Player
         </label>
         <Button type="submit" backgroundColor={themeContext.mainBrand}>
-          Search
+          {loading ? 'Searching...' : 'Search'}
         </Button>
       </Form>
-      {playerOne === null && playerList === null && (
+      {error && <Message>{error}</Message>}
+      {!error && playerOne === null && playerList === null && (
         <Message>
           Welcome to MLB Head to Head! An easier way to look up and compare
           player stats. Enter a players last name to get started!

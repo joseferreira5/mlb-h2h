@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
-    "@storybook/react": "^5.3.18"
+    "@storybook/react": "^5.3.18",
+    "netlify-cli": "^16.9.3"
   }
 }
